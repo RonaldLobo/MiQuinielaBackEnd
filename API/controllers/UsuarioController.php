@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 
 $app->get('/usuarios/:id', function ($id) {
-    echo "Hello, $id";
+    echo "Hello!! , $id";
 });
 
 $app->get('/usuarios/', function() use ($app) {
