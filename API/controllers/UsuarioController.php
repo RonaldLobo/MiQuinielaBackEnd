@@ -2,10 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-
-$app->get('/usuarios/:id', function ($id) {
-    echo "Hello!! , $id";
-});
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 
 $app->get('/usuarios/', function() use ($app) {
     $auth = new Auth();
@@ -24,4 +21,57 @@ $app->get('/usuarios/', function() use ($app) {
     }
     return $app;
 });
+
+$app->post('/usuarios/', function() use ($app) {
+    $auth = new Auth(); 
+    $usuario = new Usuario(); 
+    $dbUsuario = new DbUsuario(); 
+    $body = $app->request->getBody();
+    $postedUser = json_decode($body);
+    $usuario->parse($postedUser->usuario);
+    $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setStatus(200);
+    $app->response->setBody($resultUsuario->toJson());
+    return $app;
+});
+
+$app->put('/usuarios/', function() use ($app) {
+    $auth = new Auth(); 
+    $usuario = new Usuario(); 
+    $dbUsuario = new DbUsuario(); 
+    $body = $app->request->getBody();
+    $postedUser = json_decode($body);
+    $usuario->parse($postedUser->usuario);
+    $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setStatus(200);
+    $app->response->setBody($resultUsuario->toJson());
+    return $app;
+});
+
+$app->delete('/usuarios/:id', function($id) use ($app) {
+    $auth = new Auth(); 
+    $dbUsuario = new DbUsuario(); 
+    $dbUsuario->deleteUsuario($id);
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setStatus(200);
+    $app->response->setBody('');
+    return $app;
+});
+
+$app->get('/usuarios/:id', function($id) use ($app) {
+    $auth = new Auth(); 
+    $usuario = new Usuario(); 
+    $dbUsuario = new DbUsuario(); 
+    $resultUsuario = $dbUsuario->obtenerUsuario($id);
+    $app->response->headers->set('Content-Type', 'application/json');
+    $app->response->setStatus(200);
+    $app->response->setBody($resultUsuario->toJson());
+    return $app;
+});
+
+
+
+
 
