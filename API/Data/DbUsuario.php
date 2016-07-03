@@ -40,7 +40,7 @@ class DbUsuario {
     }
     
     function obtenerUsuario($id){
-        $sql = "SELECT * FROM usuario WHERE id=".$id;
+        $sql = "SELECT * FROM usuario WHERE pkIdUsuario=".$id;
         $db = new DB();
         $row = $db->obtenerUno($sql);
         $usuario = $this->parseRowAUsuario($row);

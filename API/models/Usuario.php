@@ -2,12 +2,12 @@
 
 class Usuario {
     public $id = 1;
-    public $nombre = 'Ronald';
-    public $apellido1 = 'Lobo';
-    public $correo = 'email@email.com';
-    public $usuario = 'ronald169090';
-    public $tipo = 'normal';
-    public $contrasenna = 'ronald';
+    public $nombre = '';
+    public $apellido1 = '';
+    public $correo = '';
+    public $usuario = '';
+    public $tipo = '';
+    public $contrasenna = '';
  
    
     function toJson() {
