@@ -40,7 +40,7 @@ class DB {
         $this->Cerrar();
     }
     
-    function obtener($sql){
+    function obtenerUno($sql){
         $this->Conectar();
         $result = $this->conn->query($sql);
         $resultRow;
@@ -56,6 +56,22 @@ class DB {
         $this->Cerrar();
         return $resultRow;
     }
+    
+    function listar($sql){
+        $this->Conectar();
+        $result = $this->conn->query($sql);
+        $resultRow = array();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                array_push($resultRow,$row);
+            }
+        } else {
+            echo "0 results";
+        }
+        $this->Cerrar();
+        return $resultRow;
+    }
+    
     
     function cerrar(){
         mysqli_close($this->conn);

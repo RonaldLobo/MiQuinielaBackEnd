@@ -51,7 +51,7 @@ class Usuario {
         return null;
     }
     
-    function parse($user) {
+    function parseDto($user) {
         if(isset($user->nombre)){
             $this->nombre = $user->nombre;
         }
@@ -75,31 +75,4 @@ class Usuario {
         }
     }
     
-    function parseRowAUsuario($row) {
-        if(isset($row['nombre'])){
-            $this->nombre = $row['nombre'];
-        }
-        if(isset($row['pkIdUsuario'])){
-            $this->id = $row['pkIdUsuario'];
-        }
-        if(isset($row['apellido1'])){
-            $this->apellido1 = $row['apellido1'];
-        }
-        if(isset($row['correo'])){
-            $this->correo = $row['correo'];
-        }
-        if(isset($row['usuario'])){
-            $this->usuario = $row['usuario'];
-        }
-        if(isset($row['tipo'])){
-            $this->tipo = $row['tipo'];
-        }
-        if(isset($row['contrasenna'])){
-            $this->contrasenna = $row['contrasenna'];
-        }
-    }
-    
-    function validaUsuario(){
-        
-    }
 } 
