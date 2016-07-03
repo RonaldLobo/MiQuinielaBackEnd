@@ -9,7 +9,8 @@ CREATE TABLE usuario(
 	correo VARCHAR(50),
 	usuario VARCHAR(30) NOT NULL,
 	tipo VARCHAR(30) NOT NULL,
-	contrasenna VARCHAR(40) NOT NULL
+	contrasenna VARCHAR(40) NOT NULL,
+	UNIQUE (usuario)
 );
 
 

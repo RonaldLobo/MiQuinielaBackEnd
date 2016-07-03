@@ -3,14 +3,15 @@
 use \Firebase\JWT\JWT;
 
 class Auth {
-    public $token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlciI6IiIsImFkbWluIjp0cnVlfQ.-JnLds-oOLJUIEFQpdmf8RSA5Zsq1DvQQKHdK-VOU2U";
+    public $token = "";
+    public $userId = "";
    
    
     function toJson() {
-        $this->generateToken("1");
         $data = array(
         'auth' => array(
             'token' => $this->token,
+            'user' => $this->userId
             )
         );
         return json_encode($data);
@@ -22,6 +23,7 @@ class Auth {
     
     function generateToken($id){
         $key = "ronald";
+        $this->userId = $id;
         $token = array(
             "userId" => $id,
             "exp" => time() + 5000
