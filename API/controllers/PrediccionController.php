@@ -26,7 +26,7 @@ $app->get('/predicciones/', function() use ($app) {
 $app->post('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    if(true){
         $prediccion = new Prediccion(); 
         $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();

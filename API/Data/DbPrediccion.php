@@ -57,7 +57,7 @@ class DbPrediccion {
         return $prediccion;
     }*/
     
-    function listarPrediccions(){
+    function listarPredicciones(){
         $sql = "SELECT * FROM prediccion";
         $db = new DB();
         $rowList = $db->listar($sql);
