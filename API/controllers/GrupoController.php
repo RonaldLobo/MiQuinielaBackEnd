@@ -1,16 +1,16 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 
-$app->get('/predicciones/', function() use ($app) {
+$app->get('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
-        $jsonArray = json_encode($predicciones);
+        $dbGrupo = new DbGrupo(); 
+        $grupos = array('grupos' => $dbGrupo->listarGrupos());
+        $jsonArray = json_encode($grupos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
@@ -23,19 +23,19 @@ $app->get('/predicciones/', function() use ($app) {
     return $app;
 });
 //mc
-$app->post('/predicciones/', function() use ($app) {
+$app->post('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
+        $grupo = new Grupo(); 
+        $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
+        $postedGroup = json_decode($body);
+        $grupo->parseDto($postedGroup->grupo);
+        $resultGrupo = $dbGrupo->agregarGrupo($grupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -45,19 +45,19 @@ $app->post('/predicciones/', function() use ($app) {
     return $app;
 });
 
-$app->put('/predicciones/', function() use ($app) {
+$app->put('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
+        $grupo = new Grupo(); 
+        $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
+        $postedGroup = json_decode($body);
+        $grupo->parseDto($postedGroup->grupo);
+        $resultGrupo = $dbGrupo->actualizarGrupo($grupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -67,12 +67,12 @@ $app->put('/predicciones/', function() use ($app) {
     return $app;
 });
 
-$app->delete('/predicciones/:id', function($id) use ($app) {
+$app->delete('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $dbPrediccion->deletePrediccion($id);
+        $dbGrupo = new DbGrupo(); 
+        $dbGrupo->deleteGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -85,15 +85,15 @@ $app->delete('/predicciones/:id', function($id) use ($app) {
     return $app;
 });
 
-$app->get('/predicciones/:id', function($id) use ($app) {
+$app->get('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
+        $dbGrupo = new DbGrupo(); 
+        $resultGrupo = $dbGrupo->obtenerGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
