@@ -22,7 +22,7 @@ $app->get('/predicciones/', function() use ($app) {
     }
     return $app;
 });
-
+//mc
 $app->post('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
