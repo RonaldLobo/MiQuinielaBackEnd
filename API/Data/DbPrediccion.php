@@ -22,13 +22,13 @@ class DbPrediccion {
     
     function actualizarPrediccion($prediccion){
         $sql = "UPDATE prediccion SET "
-                . "fkIdPrediccionPartido='".$prediccion->idPartido."', "
-                . "fkIdPrediccionUsuario='".$prediccion->idUsuario."', "
-                . "fkIdPrediccionEquipo1='".$prediccion->idEquipo1."', "
-                . "fkIdPrediccionEquipo2='".$prediccion->idEquipo2."', "
-                . "marcadorEquipo1='".$prediccion->marcador1."', "
-                . "marcadorEquipo2='".$prediccion->marcador2."' "
-                . "puntaje='".$prediccion->puntaje."' "
+                . "fkIdPrediccionPartido=".$prediccion->idPartido.", "
+                . "fkIdPrediccionUsuario=".$prediccion->idUsuario.", "
+                . "fkIdPrediccionEquipo1=".$prediccion->idEquipo1.", "
+                . "fkIdPrediccionEquipo2=".$prediccion->idEquipo2.", "
+                . "marcadorEquipo1=".$prediccion->marcador1.", "
+                . "marcadorEquipo2=".$prediccion->marcador2.", "
+                . "puntaje=".$prediccion->puntaje." "
                 . "WHERE pkIdPrediccion=".$prediccion->id;
         $db = new DB();
         $db->actualizar($sql);
@@ -57,7 +57,7 @@ class DbPrediccion {
         return $prediccion;
     }*/
     
-    function listarPrediccions(){
+    function listarPredicciones(){
         $sql = "SELECT * FROM prediccion";
         $db = new DB();
         $rowList = $db->listar($sql);
