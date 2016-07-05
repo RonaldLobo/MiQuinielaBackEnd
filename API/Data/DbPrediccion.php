@@ -1,5 +1,5 @@
 <?php
-//Marlon C
+//Marlon Castro
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DB.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
 
