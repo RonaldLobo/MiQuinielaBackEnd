@@ -42,8 +42,12 @@ class DB {
     
     function obtenerUno($sql){
         $this->Conectar();
-        $result = $this->conn->query($sql);
-        $resultRow;
+        try {
+            $result = $this->conn->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        $resultRow = array();
         if ($result->num_rows > 0) {
             // output data of each row
             while($row = $result->fetch_assoc()) {
