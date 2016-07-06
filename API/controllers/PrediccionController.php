@@ -1,16 +1,16 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 
-$app->get('/usuarios/', function() use ($app) {
+$app->get('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
-        $jsonArray = json_encode($usuarios);
+        $dbPrediccion = new DbPrediccion(); 
+        $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
+        $jsonArray = json_encode($predicciones);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
@@ -22,20 +22,20 @@ $app->get('/usuarios/', function() use ($app) {
     }
     return $app;
 });
-
-$app->post('/usuarios/', function() use ($app) {
+//mc
+$app->post('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+        $prediccion = new Prediccion(); 
+        $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+        $postedPrediction = json_decode($body);
+        $prediccion->parseDto($postedPrediction->prediccion);
+        $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultPrediccion->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -45,19 +45,19 @@ $app->post('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->put('/usuarios/', function() use ($app) {
+$app->put('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+    if(true){
+        $prediccion = new Prediccion(); 
+        $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+        $postedPrediction = json_decode($body);
+        $prediccion->parseDto($postedPrediction->prediccion);
+        $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultPrediccion->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -67,12 +67,12 @@ $app->put('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->delete('/usuarios/:id', function($id) use ($app) {
+$app->delete('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $dbUsuario = new DbUsuario(); 
-        $dbUsuario->deleteUsuario($id);
+    if(true){
+        $dbPrediccion = new DbPrediccion(); 
+        $dbPrediccion->deletePrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -85,15 +85,15 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
     return $app;
 });
 
-$app->get('/usuarios/:id', function($id) use ($app) {
+$app->get('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $dbUsuario = new DbUsuario(); 
-        $resultUsuario = $dbUsuario->obtenerUsuario($id);
+    if(true){
+        $dbPrediccion = new DbPrediccion(); 
+        $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultPrediccion->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');

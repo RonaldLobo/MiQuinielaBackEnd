@@ -31,6 +31,9 @@ $app->get('/hello/:name', function ($name) {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/UsuarioController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/AuthController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/PartidoController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/PrediccionController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/GrupoController.php';
+
 
 $app->run();
 ?>

@@ -1,16 +1,16 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 
-$app->get('/usuarios/', function() use ($app) {
+$app->get('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
-        $jsonArray = json_encode($usuarios);
+        $dbGrupo = new DbGrupo(); 
+        $grupos = array('grupos' => $dbGrupo->listarGrupos());
+        $jsonArray = json_encode($grupos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
@@ -22,20 +22,20 @@ $app->get('/usuarios/', function() use ($app) {
     }
     return $app;
 });
-
-$app->post('/usuarios/', function() use ($app) {
+//mc
+$app->post('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+        $grupo = new Grupo(); 
+        $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+        $postedGroup = json_decode($body);
+        $grupo->parseDto($postedGroup->grupo);
+        $resultGrupo = $dbGrupo->agregarGrupo($grupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -45,19 +45,19 @@ $app->post('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->put('/usuarios/', function() use ($app) {
+$app->put('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+    if(true){
+        $grupo = new Grupo(); 
+        $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+        $postedGroup = json_decode($body);
+        $grupo->parseDto($postedGroup->grupo);
+        $resultGrupo = $dbGrupo->actualizarGrupo($grupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -67,12 +67,12 @@ $app->put('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->delete('/usuarios/:id', function($id) use ($app) {
+$app->delete('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $dbUsuario = new DbUsuario(); 
-        $dbUsuario->deleteUsuario($id);
+    if(true){
+        $dbGrupo = new DbGrupo(); 
+        $dbGrupo->deleteGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -85,15 +85,15 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
     return $app;
 });
 
-$app->get('/usuarios/:id', function($id) use ($app) {
+$app->get('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        $dbUsuario = new DbUsuario(); 
-        $resultUsuario = $dbUsuario->obtenerUsuario($id);
+    if(true){
+        $dbGrupo = new DbGrupo(); 
+        $resultGrupo = $dbGrupo->obtenerGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultGrupo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');

@@ -70,7 +70,7 @@ class DB {
                 array_push($resultRow,$row);
             }
         } else {
-            echo "0 results";
+            //echo "0 results";
         }
         $this->Cerrar();
         return $resultRow;
