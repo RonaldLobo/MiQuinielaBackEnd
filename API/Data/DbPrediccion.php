@@ -49,6 +49,14 @@ class DbPrediccion {
         return $prediccion;
     }
     
+    function obtenerPrediccionPorPartido($id){ #camh20170707
+        $sql = "SELECT * FROM prediccion WHERE fkIdPrediccionPartido=".$id;
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $prediccion = $this->parseRowAPrediccion($row);
+        return $prediccion;
+    }
+    
     /*function obtenerPorPrediccion($predictionname){
         $sql = "SELECT * FROM prediccion WHERE prediccion='".$predictionname."'";
         $db = new DB();

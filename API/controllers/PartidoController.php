@@ -7,7 +7,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPartido.php';
 $app->get('/partidos/',  function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    #if($auth->isAuth($authToken)){
+        if(true){
         $dbPartido = new DbPartido();
         $partido = array('partido' => $dbPartido->listarPartidos());
         $jsonArray = json_encode($partido);
@@ -26,7 +27,8 @@ $app->get('/partidos/',  function() use ($app){
 $app->post('/partidos/', function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    #if($auth->isAuth($authToken)){
+    if(true){
         $partido = new Partido();
         $dbPartido = new DbPartido();
         $body = $app->request->getBody();
@@ -48,7 +50,8 @@ $app->post('/partidos/', function() use ($app){
 $app->put('/partidos/', function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    #if($auth->isAuth($authToken)){
+        if(true){
         $partido = new Partido();
         $dbPartido = new DbPartido();
         $body = $app->request->getBody();
@@ -70,7 +73,8 @@ $app->put('/partidos/', function() use ($app){
 $app->delete('/partidos/:id', function($idPartido) use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    #if($auth->isAuth($authToken)){
+        if(true){
         $dbPartido = new DbPartido();
         $dbPartido->deletePartido($idPartido);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -88,7 +92,8 @@ $app->delete('/partidos/:id', function($idPartido) use ($app){
 $app->get('/partidos/:id', function($idPartido) use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    #if($auth->isAuth($authToken)){
+    if(true){
         $dbPartido = new DbPartido();
         $resultPartido = $dbPartido->obtenerPartido($idPartido);
         $app->response->headers->set('Content-Type', 'application/json');

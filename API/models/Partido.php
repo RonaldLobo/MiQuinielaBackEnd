@@ -12,17 +12,23 @@ class Partido {
 	public $idPartidoEquipo2  = 0;
 	public $marcadorEquipo1   = 0;
         public $marcadorEquipo2   = 0;
-        public $fecha             = date;
-        
+        public $fecha             = "";
+        public $prediccion        = "";
+        public $torneo            = "";
+                
         function toJson(){
             $data = array(
                 'partido' => array(
+                    'idPartido'         => $this->idPartido,
                     'idPartidoTorneo'   => $this->idPartidoTorneo,
                     'idPartidoEquipo1'  => $this->idPartidoEquipo1,
                     'idPartidoEquipo2'  => $this->idPartidoEquipo2,
                     'marcadorEquipo1'   => $this->marcadorEquipo1,
                     'marcadorEquipo2'   => $this->marcadorEquipo2,
-                    'fecha'             => $this->fecha
+                    'fecha'             => $this->fecha,
+                    'prediccion'        => $$this->prediccion,
+                    'torneo'            => $this->torneo
+                    
                 )
             );
             return json_encode($data);
@@ -30,6 +36,10 @@ class Partido {
         
         
         function parseDto($partido){
+            if(isset($partido->idPartido)){
+                $this->idPartido = $partido->idPartido;
+            }
+            
             if(isset($partido->idPartidoTorneo)){
                 $this->idPartidoTorneo = $partido->idPartidoTorneo;
             }

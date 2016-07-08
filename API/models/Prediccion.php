@@ -1,7 +1,7 @@
 <?php
 
 class Prediccion {
-    public $id = 1;
+    public $id = 0;
     public $idPartido = '';
     public $idUsuario = '';
     public $idEquipo1 = '';
