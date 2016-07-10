@@ -1,6 +1,6 @@
-CREATE DATABASE appQuiniela;
+CREATE DATABASE appquiniela_1;
 
-USE appQuiniela;
+USE appquiniela_1;
 
 CREATE TABLE usuario(
 	pkIdUsuario int AUTO_INCREMENT PRIMARY KEY,

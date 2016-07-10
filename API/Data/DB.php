@@ -1,7 +1,7 @@
 <?php
 
 class DB {
-    public $dbName = 'appQuiniela';
+    public $dbName = 'appquiniela_1';
     public $servername = "localhost";
     public $username = "root";
     public $password = "";
@@ -10,6 +10,13 @@ class DB {
    
    
     function Conectar() {
+        //verifica si es localhost o si es live
+        $whitelist = array( '127.0.0.1', '::1' );
+        if(!in_array( $_SERVER['REMOTE_ADDR'], $whitelist) ){
+            $this->servername = "appquinielacom.ipagemysql.com";
+            $this->username = "appquinielaadmin";
+            $this->password = "appquinielapass";
+        }
         // Create connection
         $this->conn = mysqli_connect($this->servername, $this->username, $this->password, $this->dbName);
 
