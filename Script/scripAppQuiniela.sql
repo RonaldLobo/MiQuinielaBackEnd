@@ -27,6 +27,11 @@ CREATE TABLE torneo(
    	estado CHARACTER(1) NOT NULL
 );
 
+CREATE TABLE usuarioTorneo(
+	pkIdUsuarioTorneo int AUTO_INCREMENT PRIMARY KEY,
+	fkIdUsuario int NOT NULL,
+   	fkIdTorneo int NOT NULL
+);
 
 CREATE TABLE partido(
 	pkIdPartido int AUTO_INCREMENT PRIMARY KEY,
@@ -65,7 +70,8 @@ ALTER TABLE partido ADD CONSTRAINT fkIdPartidoEquipo2 FOREIGN KEY (fkIdPartidoEq
 ALTER TABLE grupo ADD CONSTRAINT fkIdGrupoUsuario FOREIGN KEY (fkIdGrupoUsuario) REFERENCES usuario(pkIdUsuario);
 ALTER TABLE grupo ADD CONSTRAINT fkIdGrupoTorneo FOREIGN KEY (fkIdGrupoTorneo) REFERENCES torneo(pkIdTorneo);
 
-
+ALTER TABLE usuarioTorneo ADD CONSTRAINT fkIdUsuario FOREIGN KEY(fkIdUsuario) REFERENCES usuario(pkIdUsuario);
+ALTER TABLE usuarioTorneo ADD CONSTRAINT fkIdTorneo FOREIGN KEY(fkIdTorneo) REFERENCES torneo(pkIdTorneo);
 
 ALTER TABLE prediccion ADD CONSTRAINT fkIdPrediccionPartido FOREIGN KEY (fkIdPrediccionPartido ) REFERENCES partido(pkIdPartido);
 ALTER TABLE prediccion ADD CONSTRAINT fkIdPrediccionUsuario FOREIGN KEY (fkIdPrediccionUsuario) REFERENCES usuario(pkIdUsuario);
