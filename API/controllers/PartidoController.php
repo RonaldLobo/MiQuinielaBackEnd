@@ -3,14 +3,16 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Partido.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPartido.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 
 $app->get('/partidos/',  function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    #if($auth->isAuth($authToken)){
-        if(true){
+    if($auth->isAuth($authToken)){
+        #if(true){
+        $idUsuario = $auth->userId;    
         $dbPartido = new DbPartido();
-        $partido = array('partido' => $dbPartido->listarPartidos());
+        $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
         $jsonArray = json_encode($partido);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
@@ -75,8 +77,12 @@ $app->delete('/partidos/:id', function($idPartido) use ($app){
     $authToken = $app->request->headers->get('Authorization');
     #if($auth->isAuth($authToken)){
         if(true){
+        $dbPrediccion = new DbPrediccion();
+        $dbPrediccion->deletePrediccion($idPartido);
+        
         $dbPartido = new DbPartido();
         $dbPartido->deletePartido($idPartido);
+        
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -92,14 +98,36 @@ $app->delete('/partidos/:id', function($idPartido) use ($app){
 $app->get('/partidos/:id', function($idPartido) use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    #if($auth->isAuth($authToken)){
-    if(true){
+    if($auth->isAuth($authToken)){
+    #if(true){
+        $idUsuario = $auth->userId; 
         $dbPartido = new DbPartido();
-        $resultPartido = $dbPartido->obtenerPartido($idPartido);
+        $resultPartido = $dbPartido->obtenerPartido($idPartido, $idUsuario);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($resultPartido->toJson());
     }       
+    else{
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(401);
+        $app->response->setBody("");
+    }
+    return $app;
+});
+
+$app->get('/partidos/:fechaInicio/:fechaFin',  function($fechaInicio, $fechaFin) use ($app){
+    $auth = new Auth();
+    $authToken = $app->request->headers->get('Authorization');
+    if($auth->isAuth($authToken)){
+        #if(true){
+        $idUsuario = $auth->userId;
+        $dbPartido = new DbPartido();
+        $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
+        $jsonArray = json_encode($partido);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        $app->response->setBody($jsonArray);
+    }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);

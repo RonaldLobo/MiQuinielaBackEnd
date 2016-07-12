@@ -26,7 +26,7 @@ class Partido {
                     'marcadorEquipo1'   => $this->marcadorEquipo1,
                     'marcadorEquipo2'   => $this->marcadorEquipo2,
                     'fecha'             => $this->fecha,
-                    'prediccion'        => $$this->prediccion,
+                    'prediccion'        => $this->prediccion,
                     'torneo'            => $this->torneo
                     
                 )
