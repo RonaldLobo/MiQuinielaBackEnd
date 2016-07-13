@@ -6,13 +6,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 class DbUsuario {
 
     function agregarUsuario($usuario){
-        $sql = "INSERT INTO usuario (nombre, apellido1, correo,usuario,tipo,contrasenna) VALUES ('"
+        $sql = "INSERT INTO usuario (nombre, apellido1, correo,usuario,tipo,contrasenna,rol) VALUES ('"
                 .$usuario->nombre."', '"
                 .$usuario->apellido1. "', '"
                 .$usuario->correo. "','"
                 .$usuario->usuario. "','"
                 .$usuario->tipo. "','"
-                .$usuario->contrasenna. "')";
+                .$usuario->contrasenna. "','"
+                .$usuario->rol. "')";
         $db = new DB();
         $id = $db->agregar($sql);
         $usuario->id = $id;
@@ -27,6 +28,7 @@ class DbUsuario {
                 . "usuario='".$usuario->usuario."', "
                 . "tipo='".$usuario->tipo."', "
                 . "contrasenna='".$usuario->contrasenna."' "
+                . "rol='".$usuario->rol."' "
                 . "WHERE pkIdUsuario=".$usuario->id;
         $db = new DB();
         $db->actualizar($sql);
@@ -87,6 +89,9 @@ class DbUsuario {
         }
         if(isset($row['contrasenna'])){
             $user->contrasenna = $row['contrasenna'];
+        }
+        if(isset($row['rol'])){
+            $user->rol = $row['rol'];
         }
         return $user;
     }

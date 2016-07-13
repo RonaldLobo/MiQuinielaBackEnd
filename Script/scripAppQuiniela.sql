@@ -10,6 +10,7 @@ CREATE TABLE usuario(
 	usuario VARCHAR(30) NOT NULL,
 	tipo VARCHAR(30) NOT NULL,
 	contrasenna VARCHAR(40) NOT NULL,
+        rol VARCHAR(30) NOT NULL,
 	UNIQUE (usuario)
 );
 

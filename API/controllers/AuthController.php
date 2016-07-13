@@ -14,7 +14,7 @@ $app->post('/login/', function() use ($app) {
     $usuarioEnDb = $dbUsuario->obtenerPorUsuario($user->usuario);
     if(isset($usuarioEnDb)){
         if($usuarioEnDb->tipo == "normal" && $usuarioEnDb->contrasenna == $user->contrasenna){
-            $auth->generateToken($usuarioEnDb->id);
+            $auth->generateToken($usuarioEnDb);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
             $app->response->setBody($auth->toJson());
