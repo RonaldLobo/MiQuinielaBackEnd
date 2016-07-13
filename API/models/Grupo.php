@@ -1,10 +1,12 @@
-<?php
+
+ <?php
 
 class Grupo {
     public $id = 1;
     public $idTorneo = '';
     public $idUsuario = '';
     public $estado = '';
+    public $nombre = '';
  
    
     function toJson() {
@@ -13,7 +15,8 @@ class Grupo {
             'id'=>$this->id,
             'idTorneo'=> $this->idTorneo,
             'idUsuario'=> $this->idUsuario,
-            'estado'=> $this->estado
+            'estado'=> $this->estado,
+            'nombre'=> $this->nombre
             )
         );
         return json_encode($data);
@@ -25,7 +28,8 @@ class Grupo {
             'id'=>$this->id,
             'idTorneo'=> $this->idTorneo,
             'idUsuario'=> $this->idUsuario,
-            'estado'=> $this->estado
+            'estado'=> $this->estado,
+            'nombre'=> $this->nombre
             ),
         'grupo2' => array(
             'id'=>$this->id,
@@ -35,7 +39,8 @@ class Grupo {
             'equipo2'=> $this->idEquipo2,
             'marcador1'=> $this->marcador1,
             'marcador2'=> $this->marcador2,
-            'puntaje'=> $this->puntaje
+            'puntaje'=> $this->puntaje,
+            'nombre'=> $this->nombre
             ),
         'grupo3' => array(
             'id'=>$this->id,
@@ -45,7 +50,8 @@ class Grupo {
             'equipo2'=> $this->idEquipo2,
             'marcador1'=> $this->marcador1,
             'marcador2'=> $this->marcador2,
-            'puntaje'=> $this->puntaje
+            'puntaje'=> $this->puntaje,
+            'nombre'=> $this->nombre
             )
             
         );
@@ -68,6 +74,9 @@ class Grupo {
         }
         if(isset($grupo->estado)){
             $this->estado = $grupo->estado;
+        }
+        if(isset($grupo->nombre)){
+            $this->nombre = $grupo->nombre;
         }
     }
     
