@@ -1,106 +1,105 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Equipo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbEquipo.php';
 
-$app->get('/usuarios/', function() use ($app) {
-    $auth = new Auth();
+$app->get('/equipo/', function() use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
-        $jsonArray = json_encode($usuarios);
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $equipos = array('equipo' => $dbEquipo->listarEquipo());
+        $jsonArray = json_encode($equipos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
-    }
+  /*  }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->post('/usuarios/', function() use ($app) {
-    $auth = new Auth();
+$app->post('/equipo/', function() use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+    if($auth->isAuth($authToken)){*/
+        $equipo = new Equipo(); 
+        $dbEquipo = new DbEquipo(); 
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+        $equipo->parseDto($postedUser->equipo);
+        $resultEquipo = $dbEquipo->agregarEquipo($equipo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
-    }
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->put('/usuarios/', function() use ($app) {
-    $auth = new Auth();
+$app->put('/equipo/', function() use ($app) {
+  /*  $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+    if($auth->isAuth($authToken)){*/
+        $equipo = new Equipo(); 
+        $dbEquipo = new DbEquipo(); 
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+        $equipo->parseDto($postedUser->equipo);
+        $resultEquipo= $dbEquipo->actualizarEquipo($equipo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
-    }
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->delete('/usuarios/:id', function($id) use ($app) {
-    $auth = new Auth();
+$app->delete('/equipo/:id', function($id) use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    //if($auth->isAuth($authToken)){
-    if(true){
-        $dbUsuario = new DbUsuario(); 
-        $dbUsuario->deleteUsuario($id);
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $dbEquipo->eliminarEquipo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
-    }
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->get('/usuarios/:id', function($id) use ($app) {
-    $auth = new Auth();
+$app->get('/equipo/:id', function($id) use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbUsuario = new DbUsuario(); 
-        $resultUsuario = $dbUsuario->obtenerUsuario($id);
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $resultEquipo = $dbEquipo->obtenerEquipo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
-    }
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 

@@ -1,17 +1,18 @@
 <?php
 
 
-class Torneo {
-     
+class Equipo {
+   
+    
     public $id = 1;
-    public $torneo = '';
+    public $equipo = '';
     public $estado= '';
 
    
     function toJson() {
         $data = array(
-        'torneo' => array(
-            'torneo' => $this->torneo,
+        'equipo' => array(
+            'equipo' => $this->equipo,
             'id'=>$this->id,
             'estado'=> $this->estado
             )
@@ -25,8 +26,8 @@ class Torneo {
     }
     
     function parseDto($team) {
-        if(isset($team->torneo)){
-            $this->torneo = $team->torneo;
+        if(isset($team->equipo)){
+            $this->equipo = $team->equipo;
         }
         if(isset($team->id)){
             $this->id = $team->id;

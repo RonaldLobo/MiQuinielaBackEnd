@@ -1,16 +1,16 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioTorneo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
 
-$app->get('/usuarios/', function() use ($app) {
+$app->get('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
-        $jsonArray = json_encode($usuarios);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $usuarioTorneos = array('usuarioTorneos' => $dbUsuarioTorneo->listarUsuarioTorneos());
+        $jsonArray = json_encode($usuarioTorneos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
@@ -23,19 +23,19 @@ $app->get('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->post('/usuarios/', function() use ($app) {
+$app->post('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+        $usuarioTorneo= new UsuarioTorneo(); 
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+        $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
+        $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -45,19 +45,19 @@ $app->post('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->put('/usuarios/', function() use ($app) {
+$app->put('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
+        $usuarioTorneo= new UsuarioTorneo(); 
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+        $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
+        $resultUsuarioTorneo= $dbUsuarioTorneo->actualizarUsuarioTorneo($usuarioTorneo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -67,13 +67,12 @@ $app->put('/usuarios/', function() use ($app) {
     return $app;
 });
 
-$app->delete('/usuarios/:id', function($id) use ($app) {
+$app->delete('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    //if($auth->isAuth($authToken)){
     if(true){
-        $dbUsuario = new DbUsuario(); 
-        $dbUsuario->deleteUsuario($id);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $dbUsuarioTorneo->deleteUsuarioTorneo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -86,15 +85,15 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
     return $app;
 });
 
-$app->get('/usuarios/:id', function($id) use ($app) {
+$app->get('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbUsuario = new DbUsuario(); 
-        $resultUsuario = $dbUsuario->obtenerUsuario($id);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $resultUsuarioTorneo= $dbUsuarioTorneo->obtenerUsuarioTorneo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');

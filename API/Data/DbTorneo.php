@@ -4,30 +4,81 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DB.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Torneo.php';
 
 class DbTorneo {
-    function obtenerTorneo($idTorneo){
-        $sql     = "SELECT * FROM torneo WHERE pkIdTorneo=".$idTorneo;
-        $db      = new DB();
-        $row     = $db->obtenerUno($sql);
-        $partido = $this->parseRowPartido($row);
-        return $partido;
-    }
+   
+      
+    function agregarTorneo($torneo){
+        $sql = "INSERT INTO torneo (torneo, estado) VALUES ('"
+                .$torneo->torneo ."', '"
+                .$torneo->estado. "')";
+        $db = new DB();
+        $db->agregar($sql);
+   }
     
-    function parseRowPartido($row){
-        $torneo = new Torneo();
-        if(isset($row['pkIdTorneo'])){
-            $torneo->idTorneo = $row['pkIdTorneo'];
-        }
-        
-        if(isset($row['torno'])){
-            $torneo->torneo = $row['torno'];
-        }
-        
-        if(isset($row['estado'])){
-            $torneo->estado = $row['estado'];
-        }
-        
+    function actualizarTorneo($torneo){
+        $sql = "UPDATE torneo SET "
+                . "torneo='".$torneo->torneo."', "
+                . "estado='".$torneo->estado."'"
+                . "WHERE pkIdTorneo=".$torneo->id;
+        $db = new DB();
+        $db->actualizar($sql);
         return $torneo;
     }
     
+       
+    function eliminarTorneo($id){
+        $sql = "DELETE torneo SET "
+                . "WHERE pkIdTorneo=".$id;
+        $db = new DB();
+        $db->actualizar($sql);
+        return $torneo;
+    }
+           
+    
+    function obtenerTorneo($id){
+        $sql = "SELECT torneo, estado, pkIdTorneo FROM torneo WHERE pkIdTorneo=".$id;
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $usuario = $this->parseRowTorneo($row);
+        return $usuario;
+    }
+    
+    function obtenerPorTorneo($torneo){
+        $sql = "SELECT torneo, estado, pkIdTorneo FROM torneo WHERE torneo='".$torneo."'";
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $usuario = $this->parseRowTorneo($row);
+        return $usuario;
+    }
+    
+    function listarTorneo(){
+        $sql = " SELECT torneo, estado, pkIdTorneo FROM torneo";
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $usuarioList = $this->parseRowTorneoList($rowList);
+        return $usuarioList;
+    }
+      
+        
+    function parseRowTorneo($row) {
+        $torn = new Torneo();
+        if(isset($row['torneo'])){
+            $torn->torneo = $row['torneo'];
+        }
+        if(isset($row['pkIdTorneo'])){
+            $torn->id = $row['pkIdTorneo'];
+        }
+        if(isset($row['estado'])){
+            $torn->estado = $row['estado'];
+        }
+         return $torn;
+    }
+    
+    function parseRowTorneoList($rowList) {
+        $parsedTorneo = array();
+        foreach ($rowList as $row) {
+            array_push($parsedTorneo, $this->parseRowTorneo($row));
+        }
+        return $parsedTorneo;
+    }
     
 }
