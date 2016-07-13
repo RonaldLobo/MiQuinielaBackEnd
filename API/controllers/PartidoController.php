@@ -78,11 +78,9 @@ $app->delete('/partidos/:id', function($idPartido) use ($app){
     #if($auth->isAuth($authToken)){
         if(true){
         $dbPrediccion = new DbPrediccion();
-        $dbPrediccion->deletePrediccion($idPartido);
-        
+        $dbPrediccion->deletePrediccionPartido($idPartido);
         $dbPartido = new DbPartido();
-        $dbPartido->deletePartido($idPartido);
-        
+        $dbPartido->deletePartido($idPartido); 
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');

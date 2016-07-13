@@ -40,6 +40,12 @@ class DbPrediccion {
         $db = new DB();
         $db->actualizar($sql);
     }
+
+    function deletePrediccionPartido($idPartido){
+        $sql = "DELETE FROM prediccion WHERE fkIdPrediccionPartido=".$idPartido;
+        $db = new DB();
+        $db->actualizar($sql);
+    }
     
     function obtenerPrediccion($id){
         $sql = "SELECT * FROM prediccion WHERE pkIdPrediccion=".$id;
