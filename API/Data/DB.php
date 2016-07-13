@@ -1,7 +1,7 @@
 <?php
 
 class DB {
-    public $dbName = 'appquiniela';
+    public $dbName = 'appquiniela_1';
     public $servername = "localhost";
     public $username = "root";
     public $password = "";
