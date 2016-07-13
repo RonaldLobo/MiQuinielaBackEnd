@@ -43,7 +43,7 @@ $app->post('/signup/', function() use ($app) {
     $body = $app->request->getBody();
     $user->parseDto(json_decode($body)->usuario);
     $resultUsuario = $dbUser->agregarUsuario($user);
-    $auth->generateToken($resultUsuario->id);
+    $auth->generateToken($resultUsuario);
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(200);
     $app->response->setBody($auth->toJson());
