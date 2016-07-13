@@ -113,3 +113,5 @@ INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoU
 INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '1', 'invitado');
 
 INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '1', 'miembro');
+
+INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '2', 'invitado');
