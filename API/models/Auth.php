@@ -2,16 +2,18 @@
 
 use \Firebase\JWT\JWT;
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+
 class Auth {
     public $token = "";
-    public $userId = "";
+    public $user = null;
    
    
     function toJson() {
         $data = array(
         'auth' => array(
             'token' => $this->token,
-            'user' => $this->userId
+            'user' => $this->user
             )
         );
         return json_encode($data);
@@ -21,11 +23,11 @@ class Auth {
         return null;
     }
     
-    function generateToken($id){
+    function generateToken($usuario){
         $key = "ronald";
-        $this->userId = $id;
+        $this->user = $usuario;
         $token = array(
-            "userId" => $id,
+            "userId" => $usuario->id,
             "exp" => time() + 5000
         );
 

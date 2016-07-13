@@ -8,6 +8,7 @@ class Usuario {
     public $usuario = '';
     public $tipo = '';
     public $contrasenna = '';
+    public $rol = '';
  
    
     function toJson() {
@@ -19,7 +20,8 @@ class Usuario {
             'correo'=> $this->correo,
             'usuario'=> $this->usuario,
             'tipo'=> $this->tipo,
-            'contrasenna'=> $this->contrasenna
+            'contrasenna'=> $this->contrasenna,
+            'rol'=> $this->rol
             )
         );
         return json_encode($data);
@@ -72,6 +74,9 @@ class Usuario {
         }
         if(isset($user->contrasenna)){
             $this->contrasenna = $user->contrasenna;
+        }
+        if(isset($user->rol)){
+            $this->rol = $user->rol;
         }
     }
     

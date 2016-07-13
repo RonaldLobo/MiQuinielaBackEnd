@@ -1,16 +1,16 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioTorneo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
 
-$app->get('/predicciones/', function() use ($app) {
+$app->get('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
-        $jsonArray = json_encode($predicciones);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $usuarioTorneos = array('usuarioTorneos' => $dbUsuarioTorneo->listarUsuarioTorneos());
+        $jsonArray = json_encode($usuarioTorneos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
@@ -22,20 +22,20 @@ $app->get('/predicciones/', function() use ($app) {
     }
     return $app;
 });
-//mc
-$app->post('/predicciones/', function() use ($app) {
+
+$app->post('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
+        $usuarioTorneo= new UsuarioTorneo(); 
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
+        $postedUser = json_decode($body);
+        $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
+        $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -45,19 +45,19 @@ $app->post('/predicciones/', function() use ($app) {
     return $app;
 });
 
-$app->put('/predicciones/', function() use ($app) {
+$app->put('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
+        $usuarioTorneo= new UsuarioTorneo(); 
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
+        $postedUser = json_decode($body);
+        $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
+        $resultUsuarioTorneo= $dbUsuarioTorneo->actualizarUsuarioTorneo($usuarioTorneo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -67,12 +67,12 @@ $app->put('/predicciones/', function() use ($app) {
     return $app;
 });
 
-$app->delete('/predicciones/:id', function($id) use ($app) {
+$app->delete('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $dbPrediccion->deletePrediccion($id);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $dbUsuarioTorneo->deleteUsuarioTorneo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
@@ -85,15 +85,15 @@ $app->delete('/predicciones/:id', function($id) use ($app) {
     return $app;
 });
 
-$app->get('/predicciones/:id', function($id) use ($app) {
+$app->get('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
+        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $resultUsuarioTorneo= $dbUsuarioTorneo->obtenerUsuarioTorneo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+        $app->response->setBody($resultUsuarioTorneo->toJson());
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');

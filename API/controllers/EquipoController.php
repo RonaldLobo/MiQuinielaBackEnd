@@ -1,105 +1,105 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Equipo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbEquipo.php';
 
-$app->get('/predicciones/', function() use ($app) {
-    $auth = new Auth();
+$app->get('/equipo/', function() use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
-        $jsonArray = json_encode($predicciones);
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $equipos = array('equipo' => $dbEquipo->listarEquipo());
+        $jsonArray = json_encode($equipos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
-    }
+  /*  }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
-    return $app;
-});
-//mc
-$app->post('/predicciones/', function() use ($app) {
-    $auth = new Auth();
-    $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
-        $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
-    }
-    else{
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(401);
-        $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->put('/predicciones/', function() use ($app) {
-    $auth = new Auth();
+$app->post('/equipo/', function() use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
+    if($auth->isAuth($authToken)){*/
+        $equipo = new Equipo(); 
+        $dbEquipo = new DbEquipo(); 
         $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
+        $postedUser = json_decode($body);
+        $equipo->parseDto($postedUser->equipo);
+        $resultEquipo = $dbEquipo->agregarEquipo($equipo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
-    }
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->delete('/predicciones/:id', function($id) use ($app) {
-    $auth = new Auth();
+$app->put('/equipo/', function() use ($app) {
+  /*  $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $dbPrediccion->deletePrediccion($id);
+    if($auth->isAuth($authToken)){*/
+        $equipo = new Equipo(); 
+        $dbEquipo = new DbEquipo(); 
+        $body = $app->request->getBody();
+        $postedUser = json_decode($body);
+        $equipo->parseDto($postedUser->equipo);
+        $resultEquipo= $dbEquipo->actualizarEquipo($equipo);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
+    else{
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(401);
+        $app->response->setBody("");
+    }*/
+    return $app;
+});
+
+$app->delete('/equipo/:id', function($id) use ($app) {
+   /* $auth = new Auth();
+    $authToken = $app->request->headers->get('Authorization');
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $dbEquipo->eliminarEquipo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');
-    }
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
-$app->get('/predicciones/:id', function($id) use ($app) {
-    $auth = new Auth();
+$app->get('/equipo/:id', function($id) use ($app) {
+   /* $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbPrediccion = new DbPrediccion(); 
-        $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
+    if($auth->isAuth($authToken)){*/
+        $dbEquipo = new DbEquipo(); 
+        $resultEquipo = $dbEquipo->obtenerEquipo($id);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
-    }
+        $app->response->setBody($resultEquipo->toJson());
+   /* }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }
+    }*/
     return $app;
 });
 
