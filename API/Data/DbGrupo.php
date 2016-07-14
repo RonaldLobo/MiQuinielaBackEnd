@@ -6,10 +6,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 class DbGrupo {
 
     function agregarGrupo($grupo){
-        $sql = "INSERT INTO grupo (fkIdGrupoTorneo, fkIdGrupoUsuario, estado) VALUES ('"
+        $sql = "INSERT INTO grupo (fkIdGrupoTorneo, fkIdGrupoUsuario, estado, nombre) VALUES ('"
                 .$grupo->idTorneo."', '"
                 .$grupo->idUsuario. "', '"
-                .$grupo->estado. "')";
+                .$grupo->estado. "', '"
+                .$grupo->nombre. "')";
         $db = new DB();
         $id = $db->agregar($sql);
         $grupo->id = $id;
@@ -20,7 +21,8 @@ class DbGrupo {
         $sql = "UPDATE grupo SET "
                 . "fkIdGrupoTorneo=".$grupo->idTorneo.", "
                 . "fkIdGrupoUsuario=".$grupo->idUsuario.", "
-                . "estado=".$grupo->estado." "
+                . "estado=".$grupo->estado.", "
+                . "nombre=".$grupo->nombre." "
                 . "WHERE pkIdGrupo=".$grupo->id;
         $db = new DB();
         $db->actualizar($sql);
@@ -72,6 +74,9 @@ class DbGrupo {
         }
         if(isset($row['estado'])){
             $group->estado = $row['estado'];
+        }
+        if(isset($row['nombre'])){
+            $group->nombre = $row['nombre'];
         }
         return $group;
     }
