@@ -41,6 +41,7 @@ class Auth {
             $decoded = JWT::decode($token, "ronald", array('HS256'));
             session_start();
             $_SESSION["loggedUser"]=$decoded->userId;
+            $this->userId = $decoded->userId;
             return true;
         } catch (Exception $exc) {
             return false;

@@ -40,9 +40,23 @@ class DbPrediccion {
         $db = new DB();
         $db->actualizar($sql);
     }
+
+    function deletePrediccionPartido($idPartido){
+        $sql = "DELETE FROM prediccion WHERE fkIdPrediccionPartido=".$idPartido;
+        $db = new DB();
+        $db->actualizar($sql);
+    }
     
     function obtenerPrediccion($id){
         $sql = "SELECT * FROM prediccion WHERE pkIdPrediccion=".$id;
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $prediccion = $this->parseRowAPrediccion($row);
+        return $prediccion;
+    }
+    
+    function obtenerPrediccionPorPartido($id){ #camh20170707
+        $sql = "SELECT * FROM prediccion WHERE fkIdPrediccionPartido=".$id;
         $db = new DB();
         $row = $db->obtenerUno($sql);
         $prediccion = $this->parseRowAPrediccion($row);
