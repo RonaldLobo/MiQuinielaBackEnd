@@ -5,6 +5,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbTorneo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Partido.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbEquipo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Equipo.php';
 
 class DbPartido {
     
@@ -20,6 +22,7 @@ class DbPartido {
         $db = new DB();
         $idPartido = $db->agregar($sql);
         $partido->idPartido = $idPartido;
+        $partido->fecha = strtotime($partido->fecha);
         return $partido;
     }
     
@@ -63,10 +66,11 @@ class DbPartido {
     function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin){
         $sql = "SELECT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
                 . "pa.marcadorEquipo1, pa.marcadorEquipo2, pa.fecha "
-                . "FROM partido pa, prediccion pre "
-                . "WHERE pa.pkIdPartido = pre.fkIdPrediccionPartido "
-                . "AND pre.fkIdPrediccionUsuario = '".$idUsuario."' "
-                . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'";
+                . "FROM partido pa, torneo tor, usuarioTorneo usTo "
+                . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
+                . "AND tor.pkIdTorneo = usTo.fkIdTorneo "
+                . "AND usto.fkIdUsuario = ".$idUsuario." "
+                . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'"; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
@@ -76,7 +80,10 @@ class DbPartido {
     function parseRowPartido($row, $idUsuario){
         $partido        = new Partido();
         $prediccion     = new Prediccion();
+        $equipo1        = new Equipo();
+        $equipo2        = new Equipo();
         $dbPrediccion   = new DbPrediccion();
+        $dbEquipo       = new DbEquipo();
         $dbTorneo       = new DbTorneo();
         $prediccionPartido = array();
         
@@ -105,11 +112,15 @@ class DbPartido {
         }
         
         if(isset($row['fecha'])){
-            $partido->fecha = $row['fecha'];
+            $partido->fecha = strtotime($row['fecha']);
         }
         
         $prediccion = $dbPrediccion->obtenerPrediccionPorPartido($partido->idPartido);
-        $torneo     = $dbTorneo->obtenerTorneo($partido->idPartidoTorneo); 
+        $torneo     = $dbTorneo->obtenerTorneo($partido->idPartidoTorneo);
+        $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
+        $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
+        
+
         
         if($prediccion->id == "0"){
             $prediccion->idPartido = $partido->idPartido;
@@ -130,7 +141,10 @@ class DbPartido {
                'puntaje'=>$prediccion->puntaje); 
         }
         
-        $torneoPartido = array('id'=>$torneo->idTorneo, 'nombre'=>$torneo->torneo);
+        $partido->idPartidoEquipo1 = $equipo1->equipo;
+        $partido->idPartidoEquipo2 = $equipo2->equipo;
+        
+        $torneoPartido = array('id'=>$torneo->id, 'nombre'=>$torneo->torneo);
         
         $partido->prediccion    = $prediccionPartido;
         $partido->torneo        = $torneoPartido;

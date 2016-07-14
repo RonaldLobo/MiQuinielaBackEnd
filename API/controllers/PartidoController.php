@@ -5,26 +5,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPartido.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 
-$app->get('/partidos/',  function() use ($app){
-    $auth = new Auth();
-    $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
-        #if(true){
-        $idUsuario = $auth->userId;    
-        $dbPartido = new DbPartido();
-        $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
-        $jsonArray = json_encode($partido);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($jsonArray);
-    }
-    else{
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(401);
-        $app->response->setBody("");
-    }
-    return $app;
-});
+//$app->get('/partidos/',  function() use ($app){
+//    $auth = new Auth();
+//    $authToken = $app->request->headers->get('Authorization');
+//    if($auth->isAuth($authToken)){
+//        #if(true){
+//        $idUsuario = $auth->userId;
+//        #$idUsuario = 1;    
+//        $dbPartido = new DbPartido();
+//        $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
+//        $jsonArray = json_encode($partido);
+//        $app->response->headers->set('Content-Type', 'application/json');
+//        $app->response->setStatus(200);
+//        $app->response->setBody($jsonArray);
+//    }
+//    else{
+//        $app->response->headers->set('Content-Type', 'application/json');
+//        $app->response->setStatus(401);
+//        $app->response->setBody("");
+//    }
+//    return $app;
+//});
 
 $app->post('/partidos/', function() use ($app){
     $auth = new Auth();
@@ -60,7 +61,7 @@ $app->put('/partidos/', function() use ($app){
         $postedPartido = json_decode($body);
         $partido->parseDto($postedPartido->partido);
         $resultPartido = $dbPartido->actualzarPartido($partido);
-         $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($resultPartido->toJson());
     }
@@ -98,7 +99,8 @@ $app->get('/partidos/:id', function($idPartido) use ($app){
     $authToken = $app->request->headers->get('Authorization');
     if($auth->isAuth($authToken)){
     #if(true){
-        $idUsuario = $auth->userId; 
+        $idUsuario = $auth->userId;
+        #$idUsuario = 1;
         $dbPartido = new DbPartido();
         $resultPartido = $dbPartido->obtenerPartido($idPartido, $idUsuario);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -113,14 +115,24 @@ $app->get('/partidos/:id', function($idPartido) use ($app){
     return $app;
 });
 
-$app->get('/partidos/:fechaInicio/:fechaFin',  function($fechaInicio, $fechaFin) use ($app){
+$app->get('/partidos/',  function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if($auth->isAuth($authToken)){
         #if(true){
-        $idUsuario = $auth->userId;
         $dbPartido = new DbPartido();
-        $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
+        $fechaInicio = $app->request->params('fechaInicio');
+        $fechaFin = $app->request->params('fechaFin');
+        $idUsuario = $auth->userId;
+        if (isset($fechaInicio) && isset($fechaFin)){ 
+            $fechaInicio = date('Y-m-d H:i:s', $fechaInicio);
+            $fechaFin = date('Y-m-d H:i:s', $fechaFin);
+            $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
+        }
+        else{
+        
+            $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
+        }
         $jsonArray = json_encode($partido);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);

@@ -17,6 +17,9 @@ class Partido {
         public $torneo            = "";
                 
         function toJson(){
+            if (!strtotime($this->fecha)){
+                $this->fecha = date('Y-m-d H:i:s', $this->fecha);
+            }
             $data = array(
                 'partido' => array(
                     'idPartido'         => $this->idPartido,
@@ -25,7 +28,7 @@ class Partido {
                     'idPartidoEquipo2'  => $this->idPartidoEquipo2,
                     'marcadorEquipo1'   => $this->marcadorEquipo1,
                     'marcadorEquipo2'   => $this->marcadorEquipo2,
-                    'fecha'             => $this->fecha,
+                    'fecha'             => strtotime($this->fecha),
                     'prediccion'        => $this->prediccion,
                     'torneo'            => $this->torneo
                     
@@ -61,7 +64,7 @@ class Partido {
             }
             
             if(isset($partido->fecha)){
-                $this->fecha = $partido->fecha;
+                $this->fecha = date('Y-m-d H:i:s', $partido->fecha);
             }
         }
 

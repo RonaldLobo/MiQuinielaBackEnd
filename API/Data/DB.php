@@ -1,7 +1,7 @@
 <?php
 
 class DB {
-    public $dbName = 'appquiniela';
+    public $dbName = 'appquiniela_1';
     public $servername = "localhost";
     public $username = "root";
     public $password = "";
@@ -62,7 +62,7 @@ class DB {
                 $resultRow = $row;
             }
         } else {
-            echo "0 results";
+            #echo "0 results";
         }
         $this->Cerrar();
         return $resultRow;
