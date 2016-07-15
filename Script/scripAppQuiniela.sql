@@ -106,7 +106,7 @@ INSERT INTO `appquiniela_1`.`prediccion` (`pkIdPrediccion`, `fkIdPrediccionParti
 
 INSERT INTO `appquiniela_1`.`usuarioTorneo` (`pkIdUsuarioTorneo`, `fkIdUsuario`, `fkIdTorneo`) VALUES (NULL, '1', '1'), (NULL, '2', '1');
 
-INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Amigos');
+INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Tabla General');
 
 INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Compas');
 
