@@ -30,7 +30,6 @@ class DbTorneo {
                 . "WHERE pkIdTorneo=".$id;
         $db = new DB();
         $db->actualizar($sql);
-        return $torneo;
     }
            
     
