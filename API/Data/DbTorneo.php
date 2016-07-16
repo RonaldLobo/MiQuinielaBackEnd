@@ -26,8 +26,7 @@ class DbTorneo {
     
        
     function eliminarTorneo($id){
-        $sql = "DELETE torneo SET "
-                . "WHERE pkIdTorneo=".$id;
+        $sql = "DELETE torneo WHERE pkIdTorneo=".$id;
         $db = new DB();
         $db->actualizar($sql);
     }
