@@ -48,7 +48,7 @@ $app->post('/usuarioTorneos/', function() use ($app) {
 $app->put('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $usuarioTorneo= new UsuarioTorneo(); 
         $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $body = $app->request->getBody();
@@ -70,9 +70,9 @@ $app->put('/usuarioTorneos/', function() use ($app) {
 $app->delete('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuarioTorneo= new DbUsuarioTorneo(); 
-        $dbUsuarioTorneo->deleteUsuarioTorneo($id);
+        $dbUsuarioTorneo->deleteUsuarioTorneoPorTorneoYUsuario($id,$auth->userId);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');

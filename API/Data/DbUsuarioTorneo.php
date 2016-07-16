@@ -31,6 +31,12 @@ class DbUsuarioTorneo {
         $db->actualizar($sql);
     }
     
+    function deleteUsuarioTorneoPorTorneoYUsuario($torneo,$usuario){
+        $sql = "DELETE FROM usuarioTorneo WHERE fkIdUsuario=".$usuario." AND fkIdTorneo=".$torneo;
+        $db = new DB();
+        $db->actualizar($sql);
+    }
+            
     function obtenerUsuarioTorneo($id){
         $sql = "SELECT * FROM usuarioTorneo WHERE pkIdUsuarioTorneo=".$id;
         $db = new DB();
