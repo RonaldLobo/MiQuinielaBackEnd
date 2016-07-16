@@ -9,7 +9,13 @@ $app->get('/torneo/', function() use ($app) {
     $authToken = $app->request->headers->get('Authorization');
     if($auth->isAuth($authToken)){*/
         $dbTorneo = new DbTorneo(); 
-        $torneo= array('torneo' => $dbTorneo->listarTorneo());
+        $usuario = $app->request->params('usuario');
+        if(isset($usuario)){
+            $torneo= array('torneo' => $dbTorneo->listarTorneoPorUsuario($usuario));
+        }
+        else{
+            $torneo= array('torneo' => $dbTorneo->listarTorneo());
+        }
         $jsonArray = json_encode($torneo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
