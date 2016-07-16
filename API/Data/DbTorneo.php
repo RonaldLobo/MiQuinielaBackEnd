@@ -11,7 +11,9 @@ class DbTorneo {
                 .$torneo->torneo ."', '"
                 .$torneo->estado. "')";
         $db = new DB();
-        $db->agregar($sql);
+        $torneoId = $db->agregar($sql);
+        $torneo->id = $torneoId;
+        return $torneo;
    }
     
     function actualizarTorneo($torneo){
