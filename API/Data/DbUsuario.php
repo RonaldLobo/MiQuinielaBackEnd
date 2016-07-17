@@ -16,6 +16,9 @@ class DbUsuario {
                 .$usuario->rol. "')";
         $db = new DB();
         $id = $db->agregar($sql);
+        if(!is_numeric($id)){
+            return $id;
+        }
         $usuario->id = $id;
         return $usuario;
     }

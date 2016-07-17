@@ -28,11 +28,13 @@ class DB {
     
     function agregar($sql){
         $this->Conectar();
-        $id = 0;
-        if ($this->conn->query($sql) === TRUE) {
+        $id = null;
+        //$query = $this->conn->query($sql) or die(mysqli_error());
+        $query = mysqli_query($this->conn, $sql);
+        if ($query === TRUE) {
             $id = $this->conn->insert_id;
         } else {
-            echo "Error: " . $sql . "<br>" . $this->conn->error;
+            return $this->conn->error;
         }
         $this->Cerrar();
         return $id;
@@ -42,7 +44,7 @@ class DB {
         $this->Conectar();
         if ($this->conn->query($sql) === TRUE) {
         } else {
-            echo "Error: " . $sql . "<br>" . $this->conn->error;
+            //echo "Error: " . $sql . "<br>" . $this->conn->error;
         }
         $this->Cerrar();
     }
@@ -70,7 +72,7 @@ class DB {
     
     function listar($sql){
         $this->Conectar();
-        $result = $this->conn->query($sql);
+        $result = mysqli_query($this->conn, $sql);
         $resultRow = array();
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -79,6 +81,7 @@ class DB {
         } else {
             //echo "0 results";
         }
+        //mysqli_free_result($result);
         $this->Cerrar();
         return $resultRow;
     }

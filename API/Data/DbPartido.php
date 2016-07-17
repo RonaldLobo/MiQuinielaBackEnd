@@ -64,13 +64,21 @@ class DbPartido {
     }
     
     function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin){
-        $sql = "SELECT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
-                . "pa.marcadorEquipo1, pa.marcadorEquipo2, pa.fecha "
-                . "FROM partido pa, torneo tor, usuarioTorneo usTo "
-                . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
-                . "AND tor.pkIdTorneo = usTo.fkIdTorneo "
-                . "AND usto.fkIdUsuario = ".$idUsuario." "
-                . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'"; 
+        $sql = "SELECT "
+                . " partido.pkIdPartido, "
+                . " partido.fkIdPartidoTorneo, "
+                . " partido.fkIdPartidoEquipo1, "
+                . " partido.fkIdPartidoEquipo2, "
+                . " partido.marcadorEquipo1, "
+                . " partido.marcadorEquipo2, "
+                . " partido.fecha "
+                . " FROM "
+                . " partido INNER JOIN torneo ON partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
+                . " INNER JOIN grupo ON grupo.fkIdGrupoTorneo=torneo.pkIdTorneo "
+                . " INNER JOIN usuarioGrupo ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo "
+                . " WHERE usuarioGrupo.fkIdUsuarioGrupo=".$idUsuario
+                . " AND partido.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'"
+                . " GROUP BY partido.pkIdPartido"; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);

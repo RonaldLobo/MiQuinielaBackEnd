@@ -11,7 +11,7 @@ $app->get('/invitaciones/:id', function($id) use ($app) {
     $authToken = $app->request->headers->get('Authorization');
     if(true){
         $dbUsuarioGrupo = new DbUsuarioGrupo(); 
-        $grupos = array('grupos' => $dbUsuarioGrupo->listarUsuarioGruposPorUsuarioYEstado(1,'invitado'));
+        $grupos = array('grupos' => $dbUsuarioGrupo->listarUsuarioGruposPorUsuarioYEstado($id,'invitado'));
         $jsonArray = json_encode($grupos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);

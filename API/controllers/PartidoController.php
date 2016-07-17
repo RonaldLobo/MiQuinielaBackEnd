@@ -124,13 +124,10 @@ $app->get('/partidos/',  function() use ($app){
         $fechaInicio = $app->request->params('fechaInicio');
         $fechaFin = $app->request->params('fechaFin');
         $idUsuario = $auth->userId;
-        if (isset($fechaInicio) && isset($fechaFin)){ 
-            $fechaInicio = date('Y-m-d H:i:s', $fechaInicio);
-            $fechaFin = date('Y-m-d H:i:s', $fechaFin);
+        if (isset($fechaInicio) && isset($fechaFin)){
             $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
         }
         else{
-        
             $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
         }
         $jsonArray = json_encode($partido);

@@ -21,7 +21,7 @@ $app->post('/login/', function() use ($app) {
             return $app;
         }
         if($usuarioEnDb->tipo == "fb" ){
-            $auth->generateToken($usuarioEnDb->id);
+            $auth->generateToken($usuarioEnDb);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
             $app->response->setBody($auth->toJson());
@@ -39,13 +39,36 @@ $app->post('/login/', function() use ($app) {
 $app->post('/signup/', function() use ($app) {
     $auth = new Auth(); 
     $user = new Usuario(); 
+    $errorMsg = null;
     $dbUser = new DbUsuario(); 
     $body = $app->request->getBody();
     $user->parseDto(json_decode($body)->usuario);
+    $user->rol = "usuario";
     $resultUsuario = $dbUser->agregarUsuario($user);
-    $auth->generateToken($resultUsuario);
-    $app->response->headers->set('Content-Type', 'application/json');
-    $app->response->setStatus(200);
-    $app->response->setBody($auth->toJson());
+    if(is_string($resultUsuario)){
+        if($user->tipo == "fb"){
+            $usuarioEnDb = $dbUser->obtenerPorUsuario($user->usuario);
+            $auth->generateToken($usuarioEnDb);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($auth->toJson());
+        }
+        else{
+            $error = new Error();
+            if (strpos($resultUsuario, 'Duplicate entry') !== false) {
+                $resultUsuario = 'Por favor seleccione otro usuario';
+            }
+            $error->error = $resultUsuario;
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(409);
+            $app->response->setBody($error->toJson());
+        }
+    }
+    else{
+        $auth->generateToken($resultUsuario);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        $app->response->setBody($auth->toJson());
+    }
     return $app;
 });
