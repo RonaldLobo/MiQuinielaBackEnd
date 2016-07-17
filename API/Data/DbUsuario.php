@@ -2,6 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DB.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioPuntos.php';
 
 class DbUsuario {
 
@@ -66,7 +67,34 @@ class DbUsuario {
     }
     
     
-    
+    function listarUsuariosPuntos($grupoVal){
+        $sql = "SELECT usuario.pkIdUsuario ,SUM(prediccion.puntaje)"
+                . " as puntaje, usuario.nombre FROM usuarioGrupo "
+                . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
+                . "INNER JOIN partido INNER JOIN prediccion "
+                . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
+                . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
+                . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
+                . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
+                . "WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario";
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $usuarioList = $this->parseRowAUsuarioPuntosList($rowList);
+        return $usuarioList;
+    }
+      function parseRowAUsuarioPuntos($row) {
+        $user = new UsuarioPuntos();
+        if(isset($row['nombre'])){
+            $user->nombre = $row['nombre'];
+        }
+        if(isset($row['pkIdUsuario'])){
+            $user->id = $row['pkIdUsuario'];
+        }
+        if(isset($row['puntaje'])){
+            $user->puntaje = $row['puntaje'];
+        }
+        return $user;
+    }
     function parseRowAUsuario($row) {
         $user = new Usuario();
         if(isset($row['nombre'])){
@@ -96,6 +124,13 @@ class DbUsuario {
         return $user;
     }
     
+    function parseRowAUsuarioPuntosList($rowList) {
+        $parsedUsuarios = array();
+        foreach ($rowList as $row) {
+            array_push($parsedUsuarios, $this->parseRowAUsuarioPuntos($row));
+        }
+        return $parsedUsuarios;
+    }
     function parseRowAUsuarioList($rowList) {
         $parsedUsuarios = array();
         foreach ($rowList as $row) {
