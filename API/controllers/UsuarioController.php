@@ -9,7 +9,12 @@ $app->get('/usuarios/', function() use ($app) {
     $authToken = $app->request->headers->get('Authorization');
     if(true){
         $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+        $UserPoints = $app->request->params('userPoints');
+        if (isset($UserPoints)){ 
+            $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints));
+        }else{
+            $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+        }
         $jsonArray = json_encode($usuarios);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
