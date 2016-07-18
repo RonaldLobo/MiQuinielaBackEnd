@@ -110,7 +110,7 @@ INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoU
 
 INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Compas');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '1', 'invitado');
+INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '1', 'miembro');
 
 INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '1', 'miembro');
 
