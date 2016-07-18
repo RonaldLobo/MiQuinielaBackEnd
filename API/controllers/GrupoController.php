@@ -9,7 +9,12 @@ $app->get('/grupos/', function() use ($app) {
     $authToken = $app->request->headers->get('Authorization');
     if(true){
         $dbGrupo = new DbGrupo(); 
-        $grupos = array('grupos' => $dbGrupo->listarGrupos());
+        $UserId = $app->request->params('userId');
+        if (isset($UserId)){ 
+            $grupos = array('grupos' => $dbGrupo->listarGruposUsuario($UserId));
+        }else{
+            $grupos = array('grupos' => $dbGrupo->listarGrupos());
+        }
         $jsonArray = json_encode($grupos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);

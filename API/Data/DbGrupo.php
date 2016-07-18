@@ -58,6 +58,14 @@ class DbGrupo {
         $grupoList = $this->parseRowAGrupoList($rowList);
         return $grupoList;
     }
+    function listarGruposUsuario($grupoVal){
+        $sql = "SELECT* FROM grupo INNER JOIN usuarioGrupo ON grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
+                . "WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdUsuarioGrupo=".$grupoVal;
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $grupoList = $this->parseRowAGrupoList($rowList);
+        return $grupoList;
+    }
     
     
     
