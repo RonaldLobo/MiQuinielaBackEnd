@@ -10,10 +10,15 @@ $app->get('/usuarios/', function() use ($app) {
     if(true){
         $dbUsuario = new DbUsuario(); 
         $UserPoints = $app->request->params('userPoints');
+        $byUser = $app->request->params('byUser');
         if (isset($UserPoints)){ 
             $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints));
-        }else{
-            $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+        }else{ 
+            if (isset($byUser)){ 
+                $usuarios = array('usuarios' => $dbUsuario->obtenerPorUsuario($byUser));
+            }else{
+                $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+            }
         }
         $jsonArray = json_encode($usuarios);
         $app->response->headers->set('Content-Type', 'application/json');

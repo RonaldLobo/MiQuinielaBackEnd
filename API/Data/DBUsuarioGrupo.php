@@ -9,8 +9,7 @@ class DbUsuarioGrupo {
     function agregarUsuarioGrupo($usuarioGrupo){
         $sql = "INSERT INTO usuarioGrupo (fkIdUsuarioGrupo, fkIdGrupo, estado) VALUES ('"
                 .$usuarioGrupo->usuario."', '"
-                .$usuarioGrupo->grupo."', '"
-                .$usuarioGrupo->estado. "')";
+                .$usuarioGrupo->grupo."', 'pendiente')";
         $db = new DB();
         $id = $db->agregar($sql);
         $usuarioGrupo->id = $id;
