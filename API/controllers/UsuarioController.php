@@ -15,7 +15,7 @@ $app->get('/usuarios/', function() use ($app) {
             $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints));
         }else{ 
             if (isset($byUser)){ 
-                $usuarios = array('usuarios' => $dbUsuario->obtenerPorUsuario($byUser));
+                $usuarios = array('usuarios' => $dbUsuario->obtenerDifUsuario($byUser));
             }else{
                 $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
             }
