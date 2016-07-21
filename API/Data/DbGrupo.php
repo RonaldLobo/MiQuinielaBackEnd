@@ -67,6 +67,14 @@ class DbGrupo {
         return $grupoList;
     }
     
+    function listarGruposSinUsuario($grupoVal){
+        $sql = 'SELECT * FROM grupo LEFT JOIN usuarioGrupo  ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '.$grupoVal. 
+                 ' WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL';
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $grupoList = $this->parseRowAGrupoList($rowList);
+        return $grupoList;
+    }
     
     
     function parseRowAGrupo($row) {

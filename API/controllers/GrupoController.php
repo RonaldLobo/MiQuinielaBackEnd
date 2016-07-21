@@ -10,10 +10,15 @@ $app->get('/grupos/', function() use ($app) {
     if(true){
         $dbGrupo = new DbGrupo(); 
         $UserId = $app->request->params('userId');
+        $SinUserId = $app->request->params('sinUserId');
         if (isset($UserId)){ 
             $grupos = array('grupos' => $dbGrupo->listarGruposUsuario($UserId));
         }else{
-            $grupos = array('grupos' => $dbGrupo->listarGrupos());
+            if (isset($SinUserId)){ 
+                $grupos = array('grupos' => $dbGrupo->listarGruposSinUsuario($SinUserId));
+            }else{
+                $grupos = array('grupos' => $dbGrupo->listarGrupos());
+            }
         }
         $jsonArray = json_encode($grupos);
         $app->response->headers->set('Content-Type', 'application/json');
