@@ -49,10 +49,10 @@ $app->put('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if(true){
-        $prediccion = new Prediccion(); 
         $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();
         $postedPrediction = json_decode($body);
+        $prediccion = $dbPrediccion->obtenerPrediccion($postedPrediction->prediccion->id);
         $prediccion->parseDto($postedPrediction->prediccion);
         $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
         $app->response->headers->set('Content-Type', 'application/json');

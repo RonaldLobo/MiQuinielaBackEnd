@@ -29,7 +29,7 @@ $app->post('/login/', function() use ($app) {
         }
     }
     $error = new Error();
-    $error->error = "invalid username";
+    $error->error = "Por favor seleccione otro usuario";
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(409);
     $app->response->setBody($error->toJson());

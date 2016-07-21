@@ -53,14 +53,34 @@ $app->post('/partidos/', function() use ($app){
 $app->put('/partidos/', function() use ($app){
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    #if($auth->isAuth($authToken)){
-        if(true){
-        $partido = new Partido();
+    if($auth->isAuth($authToken)){
+        //$partido = new Partido();
         $dbPartido = new DbPartido();
         $body = $app->request->getBody();
         $postedPartido = json_decode($body);
+        $partido = $dbPartido->obtenerPartidoSolo($postedPartido->partido->idPartido, $auth->userId);
         $partido->parseDto($postedPartido->partido);
         $resultPartido = $dbPartido->actualzarPartido($partido);
+        if(strtotime($resultPartido->fecha) < time()){
+            $dbPartido = new DbPrediccion();
+            $predicciones = $dbPartido->obtenerPrediccionPorPartido($resultPartido->idPartido);
+            foreach ($predicciones as $prediccion) {
+                $puntaje = 0;
+                $menor = ($resultPartido->marcadorEquipo1 < $resultPartido->marcadorEquipo2);
+                $mayor = ($resultPartido->marcadorEquipo1 > $resultPartido->marcadorEquipo2);
+                if($prediccion->marcador1 == $resultPartido->marcadorEquipo1 && $prediccion->marcador2 == $resultPartido->marcadorEquipo2){
+                    $puntaje = 3;
+                }
+                if($prediccion->marcador1 < $prediccion->marcador2 && $menor){
+                    $puntaje = 1;
+                }
+                if($prediccion->marcador1 > $prediccion->marcador2 && $mayor){
+                    $puntaje = 1;
+                }
+                $prediccion->puntaje = $puntaje;
+                $dbPartido->actualizarPrediccion($prediccion);
+            }
+        }
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($resultPartido->toJson());
@@ -124,9 +144,7 @@ $app->get('/partidos/',  function() use ($app){
         $fechaInicio = $app->request->params('fechaInicio');
         $fechaFin = $app->request->params('fechaFin');
         $idUsuario = $auth->userId;
-        if (isset($fechaInicio) && isset($fechaFin)){ 
-            $fechaInicio = date('Y-m-d H:i:s', $fechaInicio);
-            $fechaFin = date('Y-m-d H:i:s', $fechaFin);
+        if (isset($fechaInicio) && isset($fechaFin)){
             $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
         }
         else{

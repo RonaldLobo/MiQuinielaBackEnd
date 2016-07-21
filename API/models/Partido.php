@@ -22,13 +22,13 @@ class Partido {
             }
             $data = array(
                 'partido' => array(
-                    'idPartido'         => $this->idPartido,
-                    'idPartidoTorneo'   => $this->idPartidoTorneo,
-                    'idPartidoEquipo1'  => $this->idPartidoEquipo1,
-                    'idPartidoEquipo2'  => $this->idPartidoEquipo2,
-                    'marcadorEquipo1'   => $this->marcadorEquipo1,
-                    'marcadorEquipo2'   => $this->marcadorEquipo2,
-                    'fecha'             => strtotime($this->fecha),
+                    'idPartido'         => (int)$this->idPartido,
+                    'idPartidoTorneo'   => (int)$this->idPartidoTorneo,
+                    'idPartidoEquipo1'  => (int)$this->idPartidoEquipo1,
+                    'idPartidoEquipo2'  => (int)$this->idPartidoEquipo2,
+                    'marcadorEquipo1'   => (int)$this->marcadorEquipo1,
+                    'marcadorEquipo2'   => (int)$this->marcadorEquipo2,
+                    'fecha'             => $this->fecha,
                     'prediccion'        => $this->prediccion,
                     'torneo'            => $this->torneo
                     
@@ -64,7 +64,8 @@ class Partido {
             }
             
             if(isset($partido->fecha)){
-                $this->fecha = date('Y-m-d H:i:s', $partido->fecha);
+                //$fechaAqui = strtotime($partido->fecha);
+                $this->fecha = $partido->fecha;
             }
         }
 

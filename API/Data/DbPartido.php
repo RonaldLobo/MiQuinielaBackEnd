@@ -55,6 +55,14 @@ class DbPartido {
         return $partido;
     }
     
+    function obtenerPartidoSolo($idPartido, $idUsuario){
+        $sql     = "SELECT * FROM partido WHERE pkIdPartido=".$idPartido;
+        $db      = new DB();
+        $row     = $db->obtenerUno($sql);
+        $partido = $this->parseRowPartidoSolo($row, $idUsuario);
+        return $partido;
+    }
+    
     function listarPartidos($idUsuario){
         $sql = "SELECT * FROM partido";
         $db = new DB();
@@ -112,10 +120,10 @@ class DbPartido {
         }
         
         if(isset($row['fecha'])){
-            $partido->fecha = strtotime($row['fecha']);
+            $partido->fecha = $row['fecha'];
         }
         
-        $prediccion = $dbPrediccion->obtenerPrediccionPorPartido($partido->idPartido);
+        $prediccion = $dbPrediccion->obtenerPrediccionPorPartidoUsuario($partido->idPartido,$idUsuario);
         $torneo     = $dbTorneo->obtenerTorneo($partido->idPartidoTorneo);
         $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
         $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
@@ -133,10 +141,10 @@ class DbPartido {
             
             $prediccionReult = $dbPrediccion->agregarPrediccion($prediccion);
             
-           $prediccionPartido = array('marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
+           $prediccionPartido = array('id'=>$prediccionReult->id,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
         }
         else{
-           $prediccionPartido = array('marcador1'=>$prediccion->marcador1, 
+           $prediccionPartido = array('id'=>$prediccion->id,'marcador1'=>$prediccion->marcador1, 
                'marcador2'=>$prediccion->marcador2, 
                'puntaje'=>$prediccion->puntaje); 
         }
@@ -149,6 +157,40 @@ class DbPartido {
         $partido->prediccion    = $prediccionPartido;
         $partido->torneo        = $torneoPartido;
         
+        return $partido;
+    }
+    
+    function parseRowPartidoSolo($row, $idUsuario){
+        $partido        = new Partido();
+        
+        if(isset($row['pkIdPartido'])){
+            $partido->idPartido = $row['pkIdPartido'];
+        }
+        
+        if(isset($row['fkIdPartidoTorneo'])){
+            $partido->idPartidoTorneo = $row['fkIdPartidoTorneo'];
+        }
+        
+        if(isset($row['fkIdPartidoEquipo1'])){
+            $partido->idPartidoEquipo1 = $row['fkIdPartidoEquipo1'];
+        }
+        
+        if(isset($row['fkIdPartidoEquipo2'])){
+            $partido->idPartidoEquipo2 = $row['fkIdPartidoEquipo2'];
+        }
+        
+        if(isset($row['marcadorEquipo1'])){
+            $partido->marcadorEquipo1 = $row['marcadorEquipo1'];
+        }
+        
+        if(isset($row['marcadorEquipo2'])){
+            $partido->marcadorEquipo2 = $row['marcadorEquipo2'];
+        }
+        
+        if(isset($row['fecha'])){
+            $partido->fecha = $row['fecha'];
+        }
+
         return $partido;
     }
     
