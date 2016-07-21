@@ -61,3 +61,24 @@ $app->put('/invitaciones/:id', function($id) use ($app) {
     }
     return $app;
 });
+$app->post('/invitaciones/', function() use ($app) {
+    $auth = new Auth();
+    $authToken = $app->request->headers->get('Authorization');
+    if(true){
+        $usuarioGrupo = new UsuarioGrupo(); 
+        $dbUsuarioGrupo = new DbUsuarioGrupo(); 
+        $body = $app->request->getBody();
+        $postedUser = json_decode($body);
+        $usuarioGrupo->parseDto($postedUser->usuarioGrupo);
+        $resultUsuario = $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(200);
+        $app->response->setBody('');
+    }
+    else{
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setStatus(401);
+        $app->response->setBody("");
+    }
+    return $app;
+});
