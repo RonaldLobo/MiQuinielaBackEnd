@@ -1,6 +1,6 @@
-CREATE DATABASE appquiniela_1;
+CREATE DATABASE appquiniela_2;
 
-USE appquiniela_1;
+USE appquiniela_2;
 
 CREATE TABLE usuario(
 	pkIdUsuario int AUTO_INCREMENT PRIMARY KEY,
@@ -91,33 +91,33 @@ ALTER TABLE prediccion ADD CONSTRAINT fkIdPrediccionEquipo1 FOREIGN KEY (fkIdPre
 ALTER TABLE prediccion ADD CONSTRAINT fkIdPrediccionEquipo2 FOREIGN KEY (fkIdPrediccionEquipo2) REFERENCES equipo (pkIdEquipo);
 
 
-INSERT INTO `appquiniela_1`.`usuario` (`pkIdUsuario`, `nombre`, `apellido1`, `correo`, `usuario`, `tipo`, `contrasenna`, `rol`) VALUES (NULL, 'admin', 'apellido', 'correo@correo.com', 'admin', 'normal', 'admin', 'admin');
-INSERT INTO `appquiniela_1`.`usuario` (`pkIdUsuario`, `nombre`, `apellido1`, `correo`, `usuario`, `tipo`, `contrasenna`, `rol`) VALUES (NULL, 'usuario', 'apellido', 'correoUsuario@correo.com', 'usuario', 'normal', 'usuario', 'usuario');
+INSERT INTO `appquiniela_2`.`usuario` (`pkIdUsuario`, `nombre`, `apellido1`, `correo`, `usuario`, `tipo`, `contrasenna`, `rol`) VALUES (NULL, 'admin', 'apellido', 'correo@correo.com', 'admin', 'normal', 'admin', 'admin');
+INSERT INTO `appquiniela_2`.`usuario` (`pkIdUsuario`, `nombre`, `apellido1`, `correo`, `usuario`, `tipo`, `contrasenna`, `rol`) VALUES (NULL, 'usuario', 'apellido', 'correoUsuario@correo.com', 'usuario', 'normal', 'usuario', 'usuario');
 
-INSERT INTO `appquiniela_1`.`equipo` (`pkIdEquipo`, `equipo`, `estado`) VALUES (NULL, 'LDA', '1'), (NULL, 'La S', '1');
+INSERT INTO `appquiniela_2`.`equipo` (`pkIdEquipo`, `equipo`, `estado`) VALUES (NULL, 'LDA', '1'), (NULL, 'La S', '1');
 
-INSERT INTO `appquiniela_1`.`torneo` (`pkIdTorneo`, `torneo`, `estado`) VALUES (NULL, 'Campeonato CR', '1');
+INSERT INTO `appquiniela_2`.`torneo` (`pkIdTorneo`, `torneo`, `estado`) VALUES (NULL, 'Campeonato CR', '1');
 
-INSERT INTO `appquiniela_1`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-19 00:00:00');
-INSERT INTO `appquiniela_1`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-21 00:00:00');
-INSERT INTO `appquiniela_1`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-23 00:00:00');
+INSERT INTO `appquiniela_2`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-19 00:00:00');
+INSERT INTO `appquiniela_2`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-21 00:00:00');
+INSERT INTO `appquiniela_2`.`partido` (`pkIdPartido`, `fkIdPartidoTorneo`, `fkIdPartidoEquipo1`, `fkIdPartidoEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `fecha`) VALUES (NULL, '1', '1', '2', '2', '2', '2016-07-23 00:00:00');
 
-INSERT INTO `appquiniela_1`.`prediccion` (`pkIdPrediccion`, `fkIdPrediccionPartido`, `fkIdPrediccionUsuario`, `fkIdPrediccionEquipo1`, `fkIdPrediccionEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `puntaje`) VALUES (NULL, '1', '1', '1', '2', '2', '1', NULL), (NULL, '1', '1', '1', '2', '2', '1', '0');
+INSERT INTO `appquiniela_2`.`prediccion` (`pkIdPrediccion`, `fkIdPrediccionPartido`, `fkIdPrediccionUsuario`, `fkIdPrediccionEquipo1`, `fkIdPrediccionEquipo2`, `marcadorEquipo1`, `marcadorEquipo2`, `puntaje`) VALUES (NULL, '1', '1', '1', '2', '2', '1', NULL), (NULL, '1', '1', '1', '2', '2', '1', '0');
 
-INSERT INTO `appquiniela_1`.`usuarioTorneo` (`pkIdUsuarioTorneo`, `fkIdUsuario`, `fkIdTorneo`) VALUES (NULL, '1', '1'), (NULL, '2', '1');
+INSERT INTO `appquiniela_2`.`usuarioTorneo` (`pkIdUsuarioTorneo`, `fkIdUsuario`, `fkIdTorneo`) VALUES (NULL, '1', '1'), (NULL, '2', '1');
 
-INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Tabla General');
+INSERT INTO `appquiniela_2`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Tabla General');
 
-INSERT INTO `appquiniela_1`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Compas');
+INSERT INTO `appquiniela_2`.`grupo` (`pkIdGrupo`, `fkIdGrupoTorneo`, `fkIdGrupoUsuario`, `estado`, `nombre`) VALUES (NULL, '1', '1', '1', 'Compas');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '1', 'miembro');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '1', 'miembro');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '1', 'miembro');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '1', 'miembro');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '3', '1', 'miembro');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '3', '1', 'miembro');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '3', '2', 'miembro');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '3', '2', 'miembro');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '2', 'miembro');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '2', 'miembro');
 
-INSERT INTO `appquiniela_1`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '2', 'invitado');
+INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '2', 'invitado');
