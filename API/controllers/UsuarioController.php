@@ -36,27 +36,41 @@ $app->get('/usuarios/', function() use ($app) {
 $app->post('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
-        $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
-        if(is_string($resultUsuario)){
-            $error = new Error();
-            if (strpos($resultUsuario, 'Duplicate entry') !== false) {
-                $resultUsuario = 'Por favor seleccione otro usuario';
-            }
-            $error->error = $resultUsuario;
-            $app->response->headers->set('Content-Type', 'application/json');
-            $app->response->setStatus(409);
-            $app->response->setBody($error->toJson());
-        }
-        else{
+    $method = $app->request->params('method');
+    if($auth->isAuth($authToken)){
+        if(isset($method)){
+            $usuario = new Usuario(); 
+            $dbUsuario = new DbUsuario(); 
+            $body = $app->request->getBody();
+            $postedUser = json_decode($body);
+            $usuario->parseDto($postedUser->usuario);
+            $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
             $app->response->setBody($resultUsuario->toJson());
+        }
+        else{
+            $usuario = new Usuario(); 
+            $dbUsuario = new DbUsuario(); 
+            $body = $app->request->getBody();
+            $postedUser = json_decode($body);
+            $usuario->parseDto($postedUser->usuario);
+            $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+            if(is_string($resultUsuario)){
+                $error = new Error();
+                if (strpos($resultUsuario, 'Duplicate entry') !== false) {
+                    $resultUsuario = 'Por favor seleccione otro usuario';
+                }
+                $error->error = $resultUsuario;
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(409);
+                $app->response->setBody($error->toJson());
+            }
+            else{
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->setBody($resultUsuario->toJson());
+            }
         }
     }
     else{
