@@ -83,7 +83,7 @@ class DbUsuario {
                 . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
+                . "WHERE usuarioGrupo.estado='miembro'  AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
                 . " ORDER BY puntaje DESC";
         $db = new DB();
         $rowList = $db->listar($sql);
