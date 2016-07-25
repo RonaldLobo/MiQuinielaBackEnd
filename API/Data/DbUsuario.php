@@ -28,7 +28,7 @@ class DbUsuario {
                 . "correo='".$usuario->correo."', "
                 . "usuario='".$usuario->usuario."', "
                 . "tipo='".$usuario->tipo."', "
-                . "contrasenna='".$usuario->contrasenna."' "
+                . "contrasenna='".$usuario->contrasenna."', "
                 . "rol='".$usuario->rol."' "
                 . "WHERE pkIdUsuario=".$usuario->id;
         $db = new DB();
@@ -83,7 +83,7 @@ class DbUsuario {
                 . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE usuarioGrupo.estado='miembro'  AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
+                . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
                 . " ORDER BY puntaje DESC";
         $db = new DB();
         $rowList = $db->listar($sql);

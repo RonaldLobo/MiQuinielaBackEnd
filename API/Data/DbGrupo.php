@@ -43,6 +43,14 @@ class DbGrupo {
         return $grupo;
     }
     
+    function obtenerGrupoGeneral($idTorneo){
+        $sql = "SELECT * FROM grupo WHERE fkIdGrupoTorneo=".$idTorneo." AND nombre = 'General'";
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $grupo = $this->parseRowAGrupo($row);
+        return $grupo;
+    }
+    
     /*function obtenerPorGrupo($groupname){
         $sql = "SELECT * FROM grupo WHERE grupo='".$groupname."'";
         $db = new DB();
@@ -68,8 +76,9 @@ class DbGrupo {
     }
     
     function listarGruposSinUsuario($grupoVal){
-        $sql = 'SELECT * FROM grupo LEFT JOIN usuarioGrupo  ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '.$grupoVal. 
-                 ' WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL';
+        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,grupo.estado,nombre FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
+                . $grupoVal
+                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo';
         $db = new DB();
         $rowList = $db->listar($sql);
         $grupoList = $this->parseRowAGrupoList($rowList);

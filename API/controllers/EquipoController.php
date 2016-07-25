@@ -5,21 +5,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbEquipo.php';
 
 $app->get('/equipo/', function() use ($app) {
-   /* $auth = new Auth();
+    $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){*/
+    if($auth->isAuth($authToken)){
         $dbEquipo = new DbEquipo(); 
         $equipos = array('equipo' => $dbEquipo->listarEquipo());
         $jsonArray = json_encode($equipos);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($jsonArray);
-  /*  }
+    }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(401);
         $app->response->setBody("");
-    }*/
+    }
     return $app;
 });
 
