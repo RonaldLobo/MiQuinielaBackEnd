@@ -117,6 +117,4 @@ class DbUsuarioGrupo {
         return $parsedUsuarioGrupos;
     }
     
-    
-    
 } 

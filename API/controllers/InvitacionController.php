@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Error.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DBUsuarioGrupo.php';
 
 $app->get('/invitaciones/:id', function($id) use ($app) {
     $auth = new Auth();
@@ -24,16 +24,30 @@ $app->get('/invitaciones/:id', function($id) use ($app) {
     }
     return $app;
 });
+
 $app->get('/invitaciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $dbUsuarioGrupo = new DbUsuarioGrupo(); 
-        $grupos = array('grupos' => $dbUsuarioGrupo->listarUsuarioGrupos());
-        $jsonArray = json_encode($grupos);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($jsonArray);
+    $method = $app->request->params('method');
+    if($auth->isAuth($authToken)){
+        if(isset($method)){
+            $id = $app->request->params('id');
+            $dbUsuarioGrupo = new DbUsuarioGrupo(); 
+            $usuarioGrupo = $dbUsuarioGrupo->obtenerUsuarioGrupo($id);
+            $usuarioGrupo->estado = "miembro";
+            $dbUsuarioGrupo->actualizarUsuarioGrupo($usuarioGrupo);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody('');
+        }
+        else{
+            $dbUsuarioGrupo = new DbUsuarioGrupo(); 
+            $grupos = array('grupos' => $dbUsuarioGrupo->listarUsuarioGrupos());
+            $jsonArray = json_encode($grupos);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($jsonArray);
+        }
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -42,6 +56,7 @@ $app->get('/invitaciones/', function() use ($app) {
     }
     return $app;
 });
+
 $app->put('/invitaciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
@@ -61,6 +76,7 @@ $app->put('/invitaciones/:id', function($id) use ($app) {
     }
     return $app;
 });
+
 $app->post('/invitaciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');

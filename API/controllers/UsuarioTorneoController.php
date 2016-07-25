@@ -1,8 +1,12 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioTorneo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DBUsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 
 $app->get('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
@@ -26,13 +30,21 @@ $app->get('/usuarioTorneos/', function() use ($app) {
 $app->post('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $usuarioTorneo= new UsuarioTorneo(); 
         $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+        $dbUsuarioGrupo= new DbUsuarioGrupo(); 
+        $dbGrupo= new DbGrupo();
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
         $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
         $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+        $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
+        $usuarioGrupo = new UsuarioGrupo();
+        $usuarioGrupo->grupo = $grupo->id;
+        $usuarioGrupo->estado = "miembro";
+        $usuarioGrupo->usuario = $auth->userId;
+        $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody($resultUsuarioTorneo->toJson());
