@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Error.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DBUsuarioGrupo.php';
 
 $app->get('/invitaciones/:id', function($id) use ($app) {
     $auth = new Auth();
@@ -24,6 +24,7 @@ $app->get('/invitaciones/:id', function($id) use ($app) {
     }
     return $app;
 });
+
 $app->get('/invitaciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
@@ -55,6 +56,7 @@ $app->get('/invitaciones/', function() use ($app) {
     }
     return $app;
 });
+
 $app->put('/invitaciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
@@ -74,6 +76,7 @@ $app->put('/invitaciones/:id', function($id) use ($app) {
     }
     return $app;
 });
+
 $app->post('/invitaciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');

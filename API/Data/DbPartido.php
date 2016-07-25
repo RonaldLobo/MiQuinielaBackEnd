@@ -22,7 +22,6 @@ class DbPartido {
         $db = new DB();
         $idPartido = $db->agregar($sql);
         $partido->idPartido = $idPartido;
-        $partido->fecha = strtotime($partido->fecha);
         return $partido;
     }
     
@@ -77,7 +76,7 @@ class DbPartido {
                 . "FROM partido pa, torneo tor, usuarioTorneo usTo "
                 . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
                 . "AND tor.pkIdTorneo = usTo.fkIdTorneo "
-                . "AND usto.fkIdUsuario = ".$idUsuario." "
+                . "AND usTo.fkIdUsuario = ".$idUsuario." "
                 . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'"; 
         $db = new DB();
         $rowList = $db->listar($sql);

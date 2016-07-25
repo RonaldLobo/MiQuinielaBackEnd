@@ -28,7 +28,7 @@ class DbUsuario {
                 . "correo='".$usuario->correo."', "
                 . "usuario='".$usuario->usuario."', "
                 . "tipo='".$usuario->tipo."', "
-                . "contrasenna='".$usuario->contrasenna."' "
+                . "contrasenna='".$usuario->contrasenna."', "
                 . "rol='".$usuario->rol."' "
                 . "WHERE pkIdUsuario=".$usuario->id;
         $db = new DB();

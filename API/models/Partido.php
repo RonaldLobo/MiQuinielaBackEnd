@@ -17,9 +17,6 @@ class Partido {
         public $torneo            = "";
                 
         function toJson(){
-            if (!strtotime($this->fecha)){
-                $this->fecha = date('Y-m-d H:i:s', $this->fecha);
-            }
             $data = array(
                 'partido' => array(
                     'idPartido'         => (int)$this->idPartido,
