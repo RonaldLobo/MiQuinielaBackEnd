@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 $app->get('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
         $jsonArray = json_encode($predicciones);
@@ -26,16 +26,30 @@ $app->get('/predicciones/', function() use ($app) {
 $app->post('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $prediccion = new Prediccion(); 
-        $dbPrediccion = new DbPrediccion(); 
-        $body = $app->request->getBody();
-        $postedPrediction = json_decode($body);
-        $prediccion->parseDto($postedPrediction->prediccion);
-        $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($resultPrediccion->toJson());
+    $method = $app->request->params('method');
+    if($auth->isAuth($authToken)){
+        if(isset($method)){
+            $dbPrediccion = new DbPrediccion(); 
+            $body = $app->request->getBody();
+            $postedPrediction = json_decode($body);
+            $prediccion = $dbPrediccion->obtenerPrediccion($postedPrediction->prediccion->id);
+            $prediccion->parseDto($postedPrediction->prediccion);
+            $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($resultPrediccion->toJson());
+        }
+        else{
+            $prediccion = new Prediccion(); 
+            $dbPrediccion = new DbPrediccion(); 
+            $body = $app->request->getBody();
+            $postedPrediction = json_decode($body);
+            $prediccion->parseDto($postedPrediction->prediccion);
+            $resultPrediccion = $dbPrediccion->agregarPrediccion($prediccion);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($resultPrediccion->toJson());
+        }
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -48,11 +62,11 @@ $app->post('/predicciones/', function() use ($app) {
 $app->put('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $prediccion = new Prediccion(); 
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();
         $postedPrediction = json_decode($body);
+        $prediccion = $dbPrediccion->obtenerPrediccion($postedPrediction->prediccion->id);
         $prediccion->parseDto($postedPrediction->prediccion);
         $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -70,7 +84,7 @@ $app->put('/predicciones/', function() use ($app) {
 $app->delete('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $dbPrediccion->deletePrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -88,7 +102,7 @@ $app->delete('/predicciones/:id', function($id) use ($app) {
 $app->get('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');

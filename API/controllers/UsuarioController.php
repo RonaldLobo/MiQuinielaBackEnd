@@ -7,9 +7,19 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 $app->get('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
-        $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+        $UserPoints = $app->request->params('userPoints');
+        $byUser = $app->request->params('byUser');
+        if (isset($UserPoints)){ 
+            $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints));
+        }else{ 
+            if (isset($byUser)){ 
+                $usuarios = array('usuarios' => $dbUsuario->obtenerDifUsuario($byUser));
+            }else{
+                $usuarios = array('usuarios' => $dbUsuario->listarUsuarios());
+            }
+        }
         $jsonArray = json_encode($usuarios);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
@@ -26,16 +36,42 @@ $app->get('/usuarios/', function() use ($app) {
 $app->post('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
-        $usuario = new Usuario(); 
-        $dbUsuario = new DbUsuario(); 
-        $body = $app->request->getBody();
-        $postedUser = json_decode($body);
-        $usuario->parseDto($postedUser->usuario);
-        $resultUsuario = $dbUsuario->agregarUsuario($usuario);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($resultUsuario->toJson());
+    $method = $app->request->params('method');
+    if($auth->isAuth($authToken)){
+        if(isset($method)){
+            $usuario = new Usuario(); 
+            $dbUsuario = new DbUsuario(); 
+            $body = $app->request->getBody();
+            $postedUser = json_decode($body);
+            $usuario->parseDto($postedUser->usuario);
+            $resultUsuario = $dbUsuario->actualizarUsuario($usuario);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($resultUsuario->toJson());
+        }
+        else{
+            $usuario = new Usuario(); 
+            $dbUsuario = new DbUsuario(); 
+            $body = $app->request->getBody();
+            $postedUser = json_decode($body);
+            $usuario->parseDto($postedUser->usuario);
+            $resultUsuario = $dbUsuario->agregarUsuario($usuario);
+            if(is_string($resultUsuario)){
+                $error = new Error();
+                if (strpos($resultUsuario, 'Duplicate entry') !== false) {
+                    $resultUsuario = 'Por favor seleccione otro usuario';
+                }
+                $error->error = $resultUsuario;
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(409);
+                $app->response->setBody($error->toJson());
+            }
+            else{
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->setBody($resultUsuario->toJson());
+            }
+        }
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -48,7 +84,7 @@ $app->post('/usuarios/', function() use ($app) {
 $app->put('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $usuario = new Usuario(); 
         $dbUsuario = new DbUsuario(); 
         $body = $app->request->getBody();
@@ -71,7 +107,7 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     //if($auth->isAuth($authToken)){
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $dbUsuario->deleteUsuario($id);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -89,7 +125,7 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
 $app->get('/usuarios/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $resultUsuario = $dbUsuario->obtenerUsuario($id);
         $app->response->headers->set('Content-Type', 'application/json');

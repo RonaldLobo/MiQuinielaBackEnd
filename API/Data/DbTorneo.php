@@ -11,7 +11,9 @@ class DbTorneo {
                 .$torneo->torneo ."', '"
                 .$torneo->estado. "')";
         $db = new DB();
-        $db->agregar($sql);
+        $torneoId = $db->agregar($sql);
+        $torneo->id = $torneoId;
+        return $torneo;
    }
     
     function actualizarTorneo($torneo){
@@ -26,11 +28,9 @@ class DbTorneo {
     
        
     function eliminarTorneo($id){
-        $sql = "DELETE torneo SET "
-                . "WHERE pkIdTorneo=".$id;
+        $sql = "DELETE FROM torneo WHERE pkIdTorneo=".$id;
         $db = new DB();
         $db->actualizar($sql);
-        return $torneo;
     }
            
     
@@ -52,6 +52,14 @@ class DbTorneo {
     
     function listarTorneo(){
         $sql = " SELECT torneo, estado, pkIdTorneo FROM torneo";
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $usuarioList = $this->parseRowTorneoList($rowList);
+        return $usuarioList;
+    }
+      
+    function listarTorneoPorUsuario($usuario){
+        $sql = "SELECT torneo.pkIdTorneo , torneo.torneo , torneo.estado FROM usuarioTorneo INNER JOIN torneo ON usuarioTorneo.fkIdTorneo=torneo.pkIdTorneo WHERE usuarioTorneo.fkIdUsuario=".$usuario;
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowTorneoList($rowList);

@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 } 
 
+date_default_timezone_set('America/New_York');
+
 $app = new \Slim\Slim();
 $app->get('/hello/:name', function ($name) {
     echo "Hello, $name";
@@ -30,11 +32,14 @@ $app->get('/hello/:name', function ($name) {
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/UsuarioController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/AuthController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/PartidoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/EquipoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/TorneoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/PrediccionController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/GrupoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/UsuarioTorneoController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/InvitacionController.php';
+
 
 $app->run();
 ?>

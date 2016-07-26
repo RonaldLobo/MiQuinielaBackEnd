@@ -1,7 +1,7 @@
 <?php
 
 class Prediccion {
-    public $id = 1;
+    public $id = 0;
     public $idPartido = '';
     public $idUsuario = '';
     public $idEquipo1 = '';
@@ -14,14 +14,14 @@ class Prediccion {
     function toJson() {
         $data = array(
         'prediccion' => array(
-            'id'=>$this->id,
-            'idPartido'=> $this->idPartido,
-            'idUsuario'=> $this->idUsuario,
+            'id'=>(int)$this->id,
+            'idPartido'=> (int)$this->idPartido,
+            'idUsuario'=> (int)$this->idUsuario,
             'equipo1'=> $this->idEquipo1,
             'equipo2'=> $this->idEquipo2,
-            'marcador1'=> $this->marcador1,
-            'marcador2'=> $this->marcador2,
-            'puntaje'=> $this->puntaje
+            'marcador1'=> (int)$this->marcador1,
+            'marcador2'=> (int)$this->marcador2,
+            'puntaje'=> (int)$this->puntaje
             )
         );
         return json_encode($data);

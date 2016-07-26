@@ -12,7 +12,8 @@ class DbEquipo {
                 .$equipo->equipo ."', '"
                 .$equipo->estado. "')";
         $db = new DB();
-        $db->agregar($sql);
+        $equipo->id =$db->agregar($sql);
+        return $equipo;
    }
     
     function actualizarEquipo($equipo){

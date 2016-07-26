@@ -35,14 +35,45 @@ class DbPrediccion {
         return $prediccion;
     }
     
+    function actualizarPuntaje($puntaje,$id){
+        $sql = "UPDATE prediccion SET "
+                . "puntaje=".$puntaje." "
+                . "WHERE pkIdPrediccion=".$id;
+        $db = new DB();
+        $db->actualizar($sql);
+        return $prediccion;
+    }
+    
     function deletePrediccion($id){
         $sql = "DELETE FROM prediccion WHERE pkIdPrediccion=".$id;
+        $db = new DB();
+        $db->actualizar($sql);
+    }
+
+    function deletePrediccionPartido($idPartido){
+        $sql = "DELETE FROM prediccion WHERE fkIdPrediccionPartido=".$idPartido;
         $db = new DB();
         $db->actualizar($sql);
     }
     
     function obtenerPrediccion($id){
         $sql = "SELECT * FROM prediccion WHERE pkIdPrediccion=".$id;
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $prediccion = $this->parseRowAPrediccion($row);
+        return $prediccion;
+    }
+    
+    function obtenerPrediccionPorPartido($id){ #camh20170707
+        $sql = "SELECT * FROM prediccion WHERE fkIdPrediccionPartido=".$id;
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $prediccionList = $this->parseRowAPrediccionList($rowList);
+        return $prediccionList;
+    }
+    
+    function obtenerPrediccionPorPartidoUsuario($id, $usuario){ #camh20170707
+        $sql = "SELECT * FROM prediccion WHERE fkIdPrediccionPartido=".$id." AND fkIdPrediccionUsuario=".$usuario;
         $db = new DB();
         $row = $db->obtenerUno($sql);
         $prediccion = $this->parseRowAPrediccion($row);
