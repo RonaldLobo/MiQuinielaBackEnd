@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 $app->get('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $UserPoints = $app->request->params('userPoints');
         $byUser = $app->request->params('byUser');
@@ -84,7 +84,7 @@ $app->post('/usuarios/', function() use ($app) {
 $app->put('/usuarios/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $usuario = new Usuario(); 
         $dbUsuario = new DbUsuario(); 
         $body = $app->request->getBody();
@@ -107,7 +107,7 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     //if($auth->isAuth($authToken)){
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $dbUsuario->deleteUsuario($id);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -125,7 +125,7 @@ $app->delete('/usuarios/:id', function($id) use ($app) {
 $app->get('/usuarios/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $resultUsuario = $dbUsuario->obtenerUsuario($id);
         $app->response->headers->set('Content-Type', 'application/json');

@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 $app->get('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbGrupo = new DbGrupo(); 
         $UserId = $app->request->params('userId');
         $SinUserId = $app->request->params('sinUserId');
@@ -36,7 +36,7 @@ $app->get('/grupos/', function() use ($app) {
 $app->post('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $grupo = new Grupo(); 
         $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
@@ -58,7 +58,7 @@ $app->post('/grupos/', function() use ($app) {
 $app->put('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $grupo = new Grupo(); 
         $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();
@@ -80,7 +80,7 @@ $app->put('/grupos/', function() use ($app) {
 $app->delete('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbGrupo = new DbGrupo(); 
         $dbGrupo->deleteGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -98,7 +98,7 @@ $app->delete('/grupos/:id', function($id) use ($app) {
 $app->get('/grupos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbGrupo = new DbGrupo(); 
         $resultGrupo = $dbGrupo->obtenerGrupo($id);
         $app->response->headers->set('Content-Type', 'application/json');
