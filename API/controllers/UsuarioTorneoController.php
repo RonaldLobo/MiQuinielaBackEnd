@@ -11,7 +11,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 $app->get('/usuarioTorneos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $usuarioTorneos = array('usuarioTorneos' => $dbUsuarioTorneo->listarUsuarioTorneos());
         $jsonArray = json_encode($usuarioTorneos);
@@ -100,7 +100,7 @@ $app->delete('/usuarioTorneos/:id', function($id) use ($app) {
 $app->get('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbUsuarioTorneo= new DbUsuarioTorneo(); 
         $resultUsuarioTorneo= $dbUsuarioTorneo->obtenerUsuarioTorneo($id);
         $app->response->headers->set('Content-Type', 'application/json');

@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
 $app->get('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
         $jsonArray = json_encode($predicciones);
@@ -62,7 +62,7 @@ $app->post('/predicciones/', function() use ($app) {
 $app->put('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $body = $app->request->getBody();
         $postedPrediction = json_decode($body);
@@ -84,7 +84,7 @@ $app->put('/predicciones/', function() use ($app) {
 $app->delete('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $dbPrediccion->deletePrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');
@@ -102,7 +102,7 @@ $app->delete('/predicciones/:id', function($id) use ($app) {
 $app->get('/predicciones/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if(true){
+    if($auth->isAuth($authToken)){
         $dbPrediccion = new DbPrediccion(); 
         $resultPrediccion = $dbPrediccion->obtenerPrediccion($id);
         $app->response->headers->set('Content-Type', 'application/json');
