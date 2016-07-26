@@ -16,7 +16,7 @@ class DbUsuarioTorneo {
     }
     function agregarUsuarioTorneoAuth($usuarioTorneo){
         $sql = "INSERT INTO usuarioTorneo (fkIdUsuario, fkIdTorneo) VALUES ('"
-                .$usuarioTorneo."', '1')";
+                .$usuarioTorneo->id."', '1')";
         $db = new DB();
         $id = $db->agregar($sql);
         $usuarioTorneo->id = $id;

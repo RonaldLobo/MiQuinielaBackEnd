@@ -3,9 +3,12 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Error.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioTorneo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DBUsuarioGrupo.php';
 
 $app->post('/login/', function() use ($app) {
     $auth = new Auth(); 
@@ -52,19 +55,21 @@ $app->post('/login/', function() use ($app) {
 $app->post('/signup/', function() use ($app) {
     $auth = new Auth(); 
     $user = new Usuario(); 
+    $usuarioTorneo = new UsuarioTorneo(); 
     $dbUser = new DbUsuario(); 
-    $dbGrupo= new DbGrupo();
-    $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+    $dbUsuarioGrupo = new DbUsuarioGrupo();
+    $dbUsuarioTorneo = new DbUsuarioTorneo();
     $body = $app->request->getBody();
     $user->parseDto(json_decode($body)->usuario);
     $user->rol = "usuario";
     $resultUsuario = $dbUser->agregarUsuario($user);
-    $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneoAuth($resultUsuario->id);
-        $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
+        $usuarioTorneo->torneo = 1;
+        $usuarioTorneo->usuario = $resultUsuario->id;
+        $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
         $usuarioGrupo = new UsuarioGrupo();
-        $usuarioGrupo->grupo = $grupo->id;
+        $usuarioGrupo->grupo = 1;
         $usuarioGrupo->estado = "miembro";
-        $usuarioGrupo->usuario = $auth->userId;
+        $usuarioGrupo->usuario = $resultUsuario->id;
         $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
     $auth->generateToken($resultUsuario);
     $app->response->headers->set('Content-Type', 'application/json');

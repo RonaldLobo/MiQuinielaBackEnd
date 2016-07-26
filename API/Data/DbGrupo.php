@@ -50,7 +50,7 @@ class DbGrupo {
         $grupo = $this->parseRowAGrupo($row);
         return $grupo;
     }
-    
+        
     /*function obtenerPorGrupo($groupname){
         $sql = "SELECT * FROM grupo WHERE grupo='".$groupname."'";
         $db = new DB();
