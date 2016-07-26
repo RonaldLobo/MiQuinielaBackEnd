@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Error.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
 
 $app->post('/login/', function() use ($app) {
     $auth = new Auth(); 
@@ -51,10 +53,19 @@ $app->post('/signup/', function() use ($app) {
     $auth = new Auth(); 
     $user = new Usuario(); 
     $dbUser = new DbUsuario(); 
+    $dbGrupo= new DbGrupo();
+    $dbUsuarioTorneo= new DbUsuarioTorneo(); 
     $body = $app->request->getBody();
     $user->parseDto(json_decode($body)->usuario);
     $user->rol = "usuario";
     $resultUsuario = $dbUser->agregarUsuario($user);
+    $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneoAuth($resultUsuario->id);
+        $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
+        $usuarioGrupo = new UsuarioGrupo();
+        $usuarioGrupo->grupo = $grupo->id;
+        $usuarioGrupo->estado = "miembro";
+        $usuarioGrupo->usuario = $auth->userId;
+        $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
     $auth->generateToken($resultUsuario);
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(200);
