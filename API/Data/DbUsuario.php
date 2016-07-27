@@ -76,7 +76,7 @@ class DbUsuario {
     
     function listarUsuariosPuntos($grupoVal){
         $sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
-                . " as puntaje, usuario.nombre FROM usuarioGrupo "
+                . " as puntaje, usuario.usuario FROM usuarioGrupo "
                 . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
                 . "INNER JOIN partido INNER JOIN prediccion "
                 . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
@@ -92,8 +92,8 @@ class DbUsuario {
     }
       function parseRowAUsuarioPuntos($row,$position) {
         $user = new UsuarioPuntos();
-        if(isset($row['nombre'])){
-            $user->nombre = $row['nombre'];
+        if(isset($row['usuario'])){
+            $user->nombre = $row['usuario'];
         }
         if(isset($row['pkIdUsuario'])){
             $user->id = $row['pkIdUsuario'];
