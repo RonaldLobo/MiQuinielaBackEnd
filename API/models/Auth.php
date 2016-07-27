@@ -28,7 +28,7 @@ class Auth {
         $this->user = $usuario;
         $token = array(
             "userId" => $usuario->id,
-            "exp" => time() + 5000
+            "exp" => strtotime("+1 year")
         );
 
         $this->token = JWT::encode($token, $key);
