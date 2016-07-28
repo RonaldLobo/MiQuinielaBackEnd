@@ -38,16 +38,24 @@ $app->post('/usuarioTorneos/', function() use ($app) {
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
         $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
-        $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
-        $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
-        $usuarioGrupo = new UsuarioGrupo();
-        $usuarioGrupo->grupo = $grupo->id;
-        $usuarioGrupo->estado = "miembro";
-        $usuarioGrupo->usuario = $auth->userId;
-        $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody($resultUsuarioTorneo->toJson());
+        $usuarioTorneoExiste = $dbUsuarioTorneo->obtenerUsuarioTorneoPorUsuarioTorneo($usuarioTorneo->usuario, $usuarioTorneo->torneo);
+        if($usuarioTorneoExiste->id){
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(405);
+            $app->response->setBody("");
+        }
+        else{
+            $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+            $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
+            $usuarioGrupo = new UsuarioGrupo();
+            $usuarioGrupo->grupo = $grupo->id;
+            $usuarioGrupo->estado = "miembro";
+            $usuarioGrupo->usuario = $auth->userId;
+            $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody($resultUsuarioTorneo->toJson());
+        }
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
@@ -83,11 +91,18 @@ $app->delete('/usuarioTorneos/:id', function($id) use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if($auth->isAuth($authToken)){
-        $dbUsuarioTorneo= new DbUsuarioTorneo(); 
-        $dbUsuarioTorneo->deleteUsuarioTorneoPorTorneoYUsuario($id,$auth->userId);
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setStatus(200);
-        $app->response->setBody('');
+        if($id != 1){
+            $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+            $dbUsuarioTorneo->deleteUsuarioTorneoPorTorneoYUsuario($id,$auth->userId);
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(200);
+            $app->response->setBody('');
+        }
+        else{
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(405);
+            $app->response->setBody("");
+        }
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');

@@ -46,6 +46,15 @@ class DbPartido {
         
     }
     
+    function obtenerPartidoUnico($idPartido){
+        $sql     = "SELECT * FROM partido WHERE pkIdPartido=".$idPartido;
+        $db      = new DB();
+        $row     = $db->obtenerUno($sql);
+        $partido = $this->parseRowPartido($row);
+        return $partido;
+    }
+    
+    
     function obtenerPartido($idPartido, $idUsuario){
         $sql     = "SELECT * FROM partido WHERE pkIdPartido=".$idPartido;
         $db      = new DB();
@@ -54,11 +63,11 @@ class DbPartido {
         return $partido;
     }
     
-    function obtenerPartidoSolo($idPartido, $idUsuario){
+    function obtenerPartidoSolo($idPartido){
         $sql     = "SELECT * FROM partido WHERE pkIdPartido=".$idPartido;
         $db      = new DB();
         $row     = $db->obtenerUno($sql);
-        $partido = $this->parseRowPartidoSolo($row, $idUsuario);
+        $partido = $this->parseRowPartidoSolo($row, 1);
         return $partido;
     }
     

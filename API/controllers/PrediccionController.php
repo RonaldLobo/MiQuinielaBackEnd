@@ -2,7 +2,9 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Prediccion.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Partido.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPrediccion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbPartido.php';
 
 $app->get('/predicciones/', function() use ($app) {
     $auth = new Auth();
@@ -30,14 +32,25 @@ $app->post('/predicciones/', function() use ($app) {
     if($auth->isAuth($authToken)){
         if(isset($method)){
             $dbPrediccion = new DbPrediccion(); 
+            $dbPartido = new DbPartido(); 
             $body = $app->request->getBody();
             $postedPrediction = json_decode($body);
             $prediccion = $dbPrediccion->obtenerPrediccion($postedPrediction->prediccion->id);
             $prediccion->parseDto($postedPrediction->prediccion);
-            $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
-            $app->response->headers->set('Content-Type', 'application/json');
-            $app->response->setStatus(200);
-            $app->response->setBody($resultPrediccion->toJson());
+            $partido = $dbPartido->obtenerPartidoSolo($prediccion->id);
+            $date = DateTime::createFromFormat('Y-m-d H:i:s', $partido->fecha);
+            $hoy = new DateTime();
+            if($date > $hoy){
+                $resultPrediccion = $dbPrediccion->actualizarPrediccion($prediccion);
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->setBody($resultPrediccion->toJson());
+            }
+            else{
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(405);
+                $app->response->setBody("");
+            }
         }
         else{
             $prediccion = new Prediccion(); 

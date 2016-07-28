@@ -53,6 +53,14 @@ class DbUsuarioTorneo {
         return $usuarioTorneo;
     }
     
+    function obtenerUsuarioTorneoPorUsuarioTorneo($idUsuario,$idTorneo){
+        $sql = "SELECT * FROM usuarioTorneo WHERE fkIdUsuario=".$idUsuario." AND fkIdTorneo=".$idTorneo;
+        $db = new DB();
+        $row = $db->obtenerUno($sql);
+        $usuarioTorneo = $this->parseRowAUsuarioTorneo($row);
+        return $usuarioTorneo;
+    }
+    
     /*function obtenerPorUsuarioTorneo($userTournametname){
         $sql = "SELECT * FROM usuarioTorneo WHERE usuarioTorneo='".$userTournametname."'";
         $db = new DB();

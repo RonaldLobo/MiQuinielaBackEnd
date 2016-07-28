@@ -93,7 +93,7 @@ class DbUsuario {
       function parseRowAUsuarioPuntos($row,$position) {
         $user = new UsuarioPuntos();
         if(isset($row['usuario'])){
-            $user->nombre = $row['usuario'];
+            $user->nombre = substr($row['usuario'], 0, 14);
         }
         if(isset($row['pkIdUsuario'])){
             $user->id = $row['pkIdUsuario'];

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 } 
 
-date_default_timezone_set('America/New_York');
+date_default_timezone_set('America/Costa_Rica');
 
 $app = new \Slim\Slim();
 $app->get('/hello/:name', function ($name) {
