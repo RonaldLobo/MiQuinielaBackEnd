@@ -64,6 +64,65 @@ class DbPrediccion {
         return $prediccion;
     }
     
+    function listarPartidosPrediccion($idUsuario,$idTorneo){
+        $sql = "SELECT prediccion.pkIdPrediccion,prediccion.fkIdPrediccionEquipo1,prediccion.fkIdPrediccionEquipo2"
+                . ",prediccion.marcadorEquipo1 as m1,prediccion.marcadorEquipo2 as m2, partido.marcadorEquipo1 as p1,"
+                . "partido.marcadorEquipo2 as p2,prediccion.puntaje ,partido.fecha FROM prediccion INNER JOIN usuario INNER JOIN partido"
+                . " ON  usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario AND prediccion.fkIdPrediccionPartido=partido.pkIdPartido "
+                . "WHERE prediccion.fkIdPrediccionUsuario=".$idUsuario." AND partido.fkIdPartidoTorneo=".$idTorneo; 
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $partidoList = $this->parseRowAPrediccionUserList($rowList);
+        return $partidoList;
+    }
+    
+    function parseRowPartidoPrediccion($row){
+        $prediccion     = new Prediccion();
+        $equipo1        = new Equipo();
+        $equipo2        = new Equipo();
+        $dbPrediccion   = new DbPrediccion();
+        $dbEquipo       = new DbEquipo();
+        $dbTorneo       = new DbTorneo();
+        $prediccionPartido = array();
+        
+        if(isset($row['pkIdPrediccion'])){
+            $prediccion->id = $row['pkIdPrediccion'];
+        }
+       
+        
+        if(isset($row['fkIdPrediccionEquipo1'])){
+            $prediccion->idEquipo1 = $row['fkIdPrediccionEquipo1'];
+        }
+        
+        if(isset($row['fkIdPrediccionEquipo2'])){
+            $prediccion->idEquipo2 = $row['fkIdPrediccionEquipo2'];
+        }
+        
+        if(isset($row['m1'])){
+            $prediccion->marcador1 = $row['m1']."(".$row['p1'].")";
+        }
+        
+        if(isset($row['m2'])){
+            $prediccion->marcador2 = "(".$row['p2'].")".$row['m2'];
+        }
+        
+        if(isset($row['puntaje'])){
+            $prediccion->puntaje = $row['puntaje'];
+        }
+        
+        
+        $equipo1    = $dbEquipo->obtenerEquipo($prediccion->idEquipo1);
+        $equipo2    = $dbEquipo->obtenerEquipo($prediccion->idEquipo2);
+        
+        
+        $prediccion->idEquipo1 = $equipo1->equipo;
+        $prediccion->idEquipo2 = $equipo2->equipo;
+        if(strtotime($row['fecha']) < time()){
+            return $prediccion;}  else {
+            return null;
+        }
+    }
+    
     function obtenerPrediccionPorPartido($id){ #camh20170707
         $sql = "SELECT * FROM prediccion WHERE fkIdPrediccionPartido=".$id;
         $db = new DB();
@@ -135,6 +194,12 @@ class DbPrediccion {
         return $parsedPrediccions;
     }
     
-    
+    function parseRowAPrediccionUserList($rowList) {
+        $parsedPrediccions = array();
+        foreach ($rowList as $row) {
+            array_push($parsedPrediccions, $this->parseRowPartidoPrediccion($row));
+        }
+        return $parsedPrediccions;
+    }
     
 } 
