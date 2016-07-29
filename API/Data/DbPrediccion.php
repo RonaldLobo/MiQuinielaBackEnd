@@ -69,7 +69,7 @@ class DbPrediccion {
                 . ",prediccion.marcadorEquipo1 as m1,prediccion.marcadorEquipo2 as m2, partido.marcadorEquipo1 as p1,"
                 . "partido.marcadorEquipo2 as p2,prediccion.puntaje ,partido.fecha FROM prediccion INNER JOIN usuario INNER JOIN partido"
                 . " ON  usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario AND prediccion.fkIdPrediccionPartido=partido.pkIdPartido "
-                . "WHERE prediccion.fkIdPrediccionUsuario=".$idUsuario." AND partido.fkIdPartidoTorneo=".$idTorneo; 
+                . "WHERE prediccion.fkIdPrediccionUsuario=".$idUsuario." AND prediccion.puntaje!=0 AND partido.fkIdPartidoTorneo=".$idTorneo; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowAPrediccionUserList($rowList);
