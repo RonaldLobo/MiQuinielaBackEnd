@@ -10,8 +10,17 @@ $app->get('/predicciones/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
     if($auth->isAuth($authToken)){
-        $dbPrediccion = new DbPrediccion(); 
-        $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
+        $dbPrediccion = new DbPrediccion();
+        
+        $userId = $app->request->params('userId');
+        $torneoId = $app->request->params('torneoId');
+        
+        if (isset($userId) && isset($torneoId)){
+            $predicciones = array('predicciones' => $dbPrediccion->listarPartidosPrediccion($userId,$torneoId));
+        }  else {
+            $predicciones = array('predicciones' => $dbPrediccion->listarPredicciones());
+        }
+        
         $jsonArray = json_encode($predicciones);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
