@@ -46,7 +46,7 @@ $app->post('/predicciones/', function() use ($app) {
             $postedPrediction = json_decode($body);
             $prediccion = $dbPrediccion->obtenerPrediccion($postedPrediction->prediccion->id);
             $prediccion->parseDto($postedPrediction->prediccion);
-            $partido = $dbPartido->obtenerPartidoSolo($prediccion->id);
+            $partido = $dbPartido->obtenerPartidoSolo($prediccion->idPartido);
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $partido->fecha);
             $hoy = new DateTime();
             if($date > $hoy){
