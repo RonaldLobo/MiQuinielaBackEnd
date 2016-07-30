@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 class DbGrupo {
 
     function agregarGrupo($grupo){
+        if($grupo->nombre!=="General" && $grupo->nombre!=="general"){
         $sql = "INSERT INTO grupo (fkIdGrupoTorneo, fkIdGrupoUsuario, estado, nombre) VALUES ('"
                 .$grupo->idTorneo."', '"
                 .$grupo->idUsuario. "', '"
@@ -15,6 +16,8 @@ class DbGrupo {
         $id = $db->agregar($sql);
         $grupo->id = $id;
         return $grupo;
+        }
+        return "";
     }
     
     function actualizarGrupo($grupo){
@@ -76,9 +79,9 @@ class DbGrupo {
     }
     
     function listarGruposSinUsuario($grupoVal){
-        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,grupo.estado,nombre FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
+        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,grupo.estado,nombre,torneo.torneo  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
                 . $grupoVal
-                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo';
+                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo';
         $db = new DB();
         $rowList = $db->listar($sql);
         $grupoList = $this->parseRowAGrupoList($rowList);
