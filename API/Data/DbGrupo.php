@@ -81,7 +81,7 @@ class DbGrupo {
     function listarGruposSinUsuario($grupoVal){
         $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,grupo.estado,nombre,torneo.torneo  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
                 . $grupoVal
-                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo';
+                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo ';
         $db = new DB();
         $rowList = $db->listar($sql);
         $grupoList = $this->parseRowAGrupoList($rowList);
