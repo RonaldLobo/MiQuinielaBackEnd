@@ -39,7 +39,7 @@ $app->post('/usuarioTorneos/', function() use ($app) {
         $postedUser = json_decode($body);
         $usuarioTorneo->parseDto($postedUser->usuarioTorneo);
         $usuarioTorneoExiste = $dbUsuarioTorneo->obtenerUsuarioTorneoPorUsuarioTorneo($usuarioTorneo->usuario, $usuarioTorneo->torneo);
-        if($usuarioTorneoExiste->id){
+        if($usuarioTorneoExiste->id==null){
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(405);
             $app->response->setBody("");
@@ -93,7 +93,15 @@ $app->delete('/usuarioTorneos/:id', function($id) use ($app) {
     if($auth->isAuth($authToken)){
         if($id != 1){
             $dbUsuarioTorneo= new DbUsuarioTorneo(); 
+            $dbGrupo= new DbGrupo(); 
+            $dbUsuarioG= new DbUsuarioGrupo(); 
+            $grupoObj=$dbGrupo->searchUsuarioGrupo($auth->userId,$id);
+            foreach ($grupoObj as $gr) {
+                if($gr->id!=1){
+                $dbUsuarioG->deleteUsuarioGrupo($auth->userId,$gr->id);}
+            }
             $dbUsuarioTorneo->deleteUsuarioTorneoPorTorneoYUsuario($id,$auth->userId);
+            
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
             $app->response->setBody('');

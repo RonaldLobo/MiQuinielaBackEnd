@@ -7,6 +7,7 @@ class Equipo {
     public $id = 1;
     public $equipo = '';
     public $estado= '';
+    public $acronimo= '';
 
    
     function toJson() {
@@ -14,7 +15,8 @@ class Equipo {
         'equipo' => array(
             'equipo' => $this->equipo,
             'id'=>$this->id,
-            'estado'=> $this->estado
+            'estado'=> $this->estado,
+            'acronimo'=> $this->acronimo
             )
         );
         return json_encode($data);
@@ -34,6 +36,9 @@ class Equipo {
         }
         if(isset($team->estado)){
             $this->estado = $team->estado;
+        }
+        if(isset($team->acronimo)){
+            $this->acronimo = $team->acronimo;
         }
     }
     

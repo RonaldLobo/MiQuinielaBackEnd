@@ -18,7 +18,8 @@ CREATE TABLE usuario(
 CREATE TABLE equipo(
 	pkIdEquipo int AUTO_INCREMENT PRIMARY KEY,
 	equipo VARCHAR(100) NOT NULL,
-        estado CHARACTER(1) NOT NULL
+        estado CHARACTER(1) NOT NULL,
+	acronimo VARCHAR(3) NOT NULL,
 );
 
 

@@ -157,8 +157,8 @@ class DbPartido {
                'puntaje'=>$prediccion->puntaje); 
         }
         
-        $partido->idPartidoEquipo1 = $equipo1->equipo;
-        $partido->idPartidoEquipo2 = $equipo2->equipo;
+        $partido->idPartidoEquipo1 = $equipo1->equipo."&".$equipo1->acronimo;
+        $partido->idPartidoEquipo2 = $equipo2->equipo."&".$equipo2->acronimo;
         
         $torneoPartido = array('id'=>$torneo->id, 'nombre'=>$torneo->torneo);
         
