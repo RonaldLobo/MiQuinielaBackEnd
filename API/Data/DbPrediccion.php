@@ -115,8 +115,8 @@ class DbPrediccion {
         $equipo2    = $dbEquipo->obtenerEquipo($prediccion->idEquipo2);
         
         
-        $prediccion->idEquipo1 = $equipo1->equipo;
-        $prediccion->idEquipo2 = $equipo2->equipo;
+        $prediccion->idEquipo1 = $equipo1->equipo."&".$equipo1->acronimo;
+        $prediccion->idEquipo2 = $equipo2->equipo."&".$equipo2->acronimo;
         if(strtotime($row['fecha']) < time()){
             return $prediccion;}  else {
             return null;
