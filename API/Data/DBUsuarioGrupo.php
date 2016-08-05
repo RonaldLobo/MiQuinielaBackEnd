@@ -28,11 +28,13 @@ class DbUsuarioGrupo {
         return $usuarioGrupo;
     }
     
-    function deleteUsuarioGrupo($id){
-        $sql = "DELETE FROM usuarioGrupo WHERE pkIdUsuarioGrupo=".$id;
+    function deleteUsuarioGrupo($id,$gru){
+        $sql = "DELETE FROM usuarioGrupo WHERE fkIdUsuarioGrupo=".$id." AND fkIdGrupo=".$gru;
         $db = new DB();
         $db->actualizar($sql);
     }
+    
+    
     
     function obtenerUsuarioGrupo($id){
         $sql = "SELECT * FROM usuarioGrupo WHERE pkIdUsuarioGrupo=".$id;

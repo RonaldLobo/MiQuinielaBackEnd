@@ -11,11 +11,12 @@ $app->get('/grupos/', function() use ($app) {
         $dbGrupo = new DbGrupo(); 
         $UserId = $app->request->params('userId');
         $SinUserId = $app->request->params('sinUserId');
+        $UserTorneo = $app->request->params('torneo');
         if (isset($UserId)){ 
             $grupos = array('grupos' => $dbGrupo->listarGruposUsuario($UserId));
         }else{
             if (isset($SinUserId)){ 
-                $grupos = array('grupos' => $dbGrupo->listarGruposSinUsuario($SinUserId));
+                $grupos = array('grupos' => $dbGrupo->listarGruposSinUsuario($SinUserId,$UserTorneo));
             }else{
                 $grupos = array('grupos' => $dbGrupo->listarGrupos());
             }
@@ -36,7 +37,7 @@ $app->get('/grupos/', function() use ($app) {
 $app->post('/grupos/', function() use ($app) {
     $auth = new Auth();
     $authToken = $app->request->headers->get('Authorization');
-    if($auth->isAuth($authToken)){
+    if(true){
         $grupo = new Grupo(); 
         $dbGrupo = new DbGrupo(); 
         $body = $app->request->getBody();

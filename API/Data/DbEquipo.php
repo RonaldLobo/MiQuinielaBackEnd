@@ -8,9 +8,10 @@ class DbEquipo {
     
     
     function agregarEquipo($equipo){
-        $sql = "INSERT INTO equipo (equipo, estado) VALUES ('"
+        $sql = "INSERT INTO equipo (equipo, estado,acronimo) VALUES ('"
                 .$equipo->equipo ."', '"
-                .$equipo->estado. "')";
+                .$equipo->estado. "', '"
+                .$equipo->acronimo. "')";
         $db = new DB();
         $equipo->id =$db->agregar($sql);
         return $equipo;
@@ -19,7 +20,8 @@ class DbEquipo {
     function actualizarEquipo($equipo){
         $sql = "UPDATE equipo SET "
                 . "equipo='".$equipo->equipo."', "
-                . "estado='".$equipo->estado."'"
+                . "estado='".$equipo->estado."', "
+                . "acronimo='".$equipo->acronimo."'"
                 . "WHERE pkIdEquipo=".$equipo->id;
         $db = new DB();
         $db->actualizar($sql);
@@ -38,7 +40,7 @@ class DbEquipo {
       
     
      function obtenerEquipo($id){
-        $sql = "SELECT equipo, estado, pkIdEquipo FROM equipo WHERE pkIdEquipo=".$id;
+        $sql = "SELECT equipo, estado, pkIdEquipo,acronimo FROM equipo WHERE pkIdEquipo=".$id;
         $db = new DB();
         $row = $db->obtenerUno($sql);
         $usuario = $this->parseRowEquipo($row);
@@ -46,7 +48,7 @@ class DbEquipo {
     }
     
     function obtenerPorEquipo($equipo){
-        $sql = "SELECT equipo, estado, pkIdEquipo  FROM equipo WHERE equipo='".$equipo."'";
+        $sql = "SELECT equipo, estado, pkIdEquipo, acronimo  FROM equipo WHERE equipo='".$equipo."'";
         $db = new DB();
         $row = $db->obtenerUno($sql);
         $usuario = $this->parseRowEquipo($row);
@@ -54,7 +56,7 @@ class DbEquipo {
     }
     
     function listarEquipo(){
-        $sql = " SELECT equipo, estado, pkIdEquipo FROM equipo";
+        $sql = " SELECT equipo, estado, acronimo, pkIdEquipo FROM equipo";
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowEquipoList($rowList);
@@ -73,6 +75,9 @@ class DbEquipo {
         }
         if(isset($row['estado'])){
             $team->estado = $row['estado'];
+        }
+        if(isset($row['acronimo'])){
+            $team->acronimo = $row['acronimo'];
         }
          return $team;
     }

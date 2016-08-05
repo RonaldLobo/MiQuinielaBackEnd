@@ -6,7 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Grupo.php';
 class DbGrupo {
 
     function agregarGrupo($grupo){
-        if($grupo->nombre!=="General" && $grupo->nombre!=="general"){
+        if(($grupo->nombre!=="General" && $grupo->nombre!=="general")||$grupo->idUsuario==1){
         $sql = "INSERT INTO grupo (fkIdGrupoTorneo, fkIdGrupoUsuario, estado, nombre) VALUES ('"
                 .$grupo->idTorneo."', '"
                 .$grupo->idUsuario. "', '"
@@ -45,7 +45,14 @@ class DbGrupo {
         $grupo = $this->parseRowAGrupo($row);
         return $grupo;
     }
-    
+    function searchUsuarioGrupo($id,$gru){
+        $sql = "SELECT grupo.pkIdGrupo FROM usuarioTorneo,usuarioGrupo LEFT JOIN grupo on grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
+                . "WHERE usuarioTorneo.fkIdUsuario=".$id." AND usuarioTorneo.fkIdTorneo=".$gru." AND grupo.fkIdGrupoTorneo=usuarioTorneo.fkIdTorneo GROUP BY grupo.pkIdGrupo";
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $grupoList = $this->parseRowAGrupoList($rowList);
+        return $grupoList;
+    }
     function obtenerGrupoGeneral($idTorneo){
         $sql = "SELECT * FROM grupo WHERE fkIdGrupoTorneo=".$idTorneo." AND nombre = 'General'";
         $db = new DB();
@@ -70,18 +77,18 @@ class DbGrupo {
         return $grupoList;
     }
     function listarGruposUsuario($grupoVal){
-        $sql = "SELECT* FROM grupo INNER JOIN usuarioGrupo ON grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
-                . "WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdUsuarioGrupo=".$grupoVal;
+        $sql = "SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado FROM grupo INNER JOIN usuarioGrupo ON grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
+                . "INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdUsuarioGrupo=".$grupoVal;
         $db = new DB();
         $rowList = $db->listar($sql);
         $grupoList = $this->parseRowAGrupoList($rowList);
         return $grupoList;
     }
     
-    function listarGruposSinUsuario($grupoVal){
-        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,grupo.estado,nombre,torneo.torneo  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
+    function listarGruposSinUsuario($grupoVal,$usrT){
+        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
                 . $grupoVal
-                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL GROUP BY grupo.pkIdGrupo ';
+                . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL AND grupo.fkIdGrupoTorneo='.$usrT.'  GROUP BY grupo.pkIdGrupo ';
         $db = new DB();
         $rowList = $db->listar($sql);
         $grupoList = $this->parseRowAGrupoList($rowList);
