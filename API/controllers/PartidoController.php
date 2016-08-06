@@ -163,6 +163,7 @@ $app->get('/partidos/',  function() use ($app){
         $idUsuario = $auth->userId;
         if (isset($fechaInicio) && isset($fechaFin)){
             $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
+            
         }
         else{
         

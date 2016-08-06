@@ -86,10 +86,11 @@ class DbPartido {
                 . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
                 . "AND tor.pkIdTorneo = usTo.fkIdTorneo "
                 . "AND usTo.fkIdUsuario = ".$idUsuario." "
-                . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'"; 
+                . "AND pa.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ORDER BY pa.fecha "; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
+        
         return $partidoList;
     }
     
@@ -156,7 +157,6 @@ class DbPartido {
                'marcador2'=>$prediccion->marcador2, 
                'puntaje'=>$prediccion->puntaje); 
         }
-        
         $partido->idPartidoEquipo1 = $equipo1->equipo."&".$equipo1->acronimo;
         $partido->idPartidoEquipo2 = $equipo2->equipo."&".$equipo2->acronimo;
         
