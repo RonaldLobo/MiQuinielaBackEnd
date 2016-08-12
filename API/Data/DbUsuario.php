@@ -84,7 +84,7 @@ class DbUsuario {
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
                 . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
-                . " ORDER BY puntaje DESC";
+                . " ORDER BY puntaje DESC, usuario.usuario ASC";
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowAUsuarioPuntosList($rowList);
