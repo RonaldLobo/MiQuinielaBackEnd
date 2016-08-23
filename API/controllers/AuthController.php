@@ -65,12 +65,12 @@ $app->post('/signup/', function() use ($app) {
     $resultUsuario = $dbUser->agregarUsuario($user);
         $usuarioTorneo->torneo = 1;
         $usuarioTorneo->usuario = $resultUsuario->id;
-        $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+        //$dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
         $usuarioGrupo = new UsuarioGrupo();
         $usuarioGrupo->grupo = 1;
         $usuarioGrupo->estado = "miembro";
         $usuarioGrupo->usuario = $resultUsuario->id;
-        $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+        //$dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
     $auth->generateToken($resultUsuario);
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(200);

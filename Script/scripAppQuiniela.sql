@@ -118,3 +118,20 @@ INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrup
 INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '1', '2', 'miembro');
 
 INSERT INTO `appquiniela_2`.`usuarioGrupo` (`pkIdUsuarioGrupo`, `fkIdUsuarioGrupo`, `fkIdGrupo`, `estado`) VALUES (NULL, '2', '2', 'invitado');
+
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('America', '1', 'AME');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Tigres UANL', '1', 'TIG');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Queretaro', '1', 'QRT');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Monterrey', '1', 'MTR');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('M. Morelia', '1', 'MOR');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Atlas', '1', 'ATL');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Pumas UNAM', '1', 'PUM');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Chivas Guadalajara', '1', 'GUA');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Puebla', '1', 'PUE');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Toluca', '1', 'TOL');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Cruz Azul', '1', 'CAZ');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Veracruz', '1', 'VER');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Jaguares', '1', 'JAG');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Necaxa', '1', 'NEC');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Santos Laguna', '1', 'LAG');
+INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Leon', '1', 'LEO');
