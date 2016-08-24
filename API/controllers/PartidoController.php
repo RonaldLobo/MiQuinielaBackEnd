@@ -158,15 +158,15 @@ $app->get('/partidos/',  function() use ($app){
     if($auth->isAuth($authToken)){
         #if(true){
         $dbPartido = new DbPartido();
+        $fechaLocal = $app->request->params('fechaLocal');
         $fechaInicio = $app->request->params('fechaInicio');
         $fechaFin = $app->request->params('fechaFin');
         $idUsuario = $auth->userId;
         if (isset($fechaInicio) && isset($fechaFin)){
-            $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin));
+            $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin, $fechaLocal));
             
         }
         else{
-        
             $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
         }
         $jsonArray = json_encode($partido);
