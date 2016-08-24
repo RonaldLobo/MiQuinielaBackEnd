@@ -137,7 +137,7 @@ class DbPartido {
             $diff=($fechaBack-$fechaLocal);
             $horaNueva=$ejem-$diff;
             //echo $fechaLocal.' -- '.$fechaBack.' -- '.$diff.' -- '.date("Y-m-d H:i:s",$horaNueva);
-            $partido->fecha = date("Y-m-d H:i:s",$horaNueva);
+            $partido->fecha = date("Y-m-d H:i",$horaNueva);
         }
         
         $prediccion = $dbPrediccion->obtenerPrediccionPorPartidoUsuario($partido->idPartido,$idUsuario);
