@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbEquipo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Equipo.php';
 
 class DbPartido {
-    
+    public $fechaLocal=""; 
     function agregarPartido($partido){
         $sql = "INSERT INTO partido(fkIdPartidoTorneo, fkIdPartidoEquipo1, "
                 . "fkIdPartidoEquipo2, marcadorEquipo1, marcadorEquipo2, fecha) VALUES ("
@@ -79,7 +79,8 @@ class DbPartido {
         return $partidoList;
     }
     
-    function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin){
+    function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin,$local){
+        $this->fechaLocal=$local;
         $sql = "SELECT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
                 . "pa.marcadorEquipo1, pa.marcadorEquipo2, pa.fecha "
                 . "FROM partido pa, torneo tor, usuarioTorneo usTo "
@@ -129,7 +130,14 @@ class DbPartido {
         }
         
         if(isset($row['fecha'])){
-            $partido->fecha = $row['fecha'];
+            $fechaLocal = strtotime($this->fechaLocal);  
+            
+            $fechaBack=strtotime(date('h:i', time()));
+            $ejem=strtotime($row['fecha']);
+            $diff=($fechaBack-$fechaLocal);
+            $horaNueva=$ejem-$diff;
+            //echo $fechaLocal.' -- '.$fechaBack.' -- '.$diff.' -- '.date("Y-m-d H:i:s",$horaNueva);
+            $partido->fecha = date("Y-m-d H:i:s",$horaNueva);
         }
         
         $prediccion = $dbPrediccion->obtenerPrediccionPorPartidoUsuario($partido->idPartido,$idUsuario);

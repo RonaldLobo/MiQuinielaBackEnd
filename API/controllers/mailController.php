@@ -4,7 +4,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 
-
+$app->get('/hora/', function() use ($app) {
+     $fechaLocal = strtotime($app->request->params('fechaLocal'));  
+     $fechaBack=strtotime(date('h:i', time()));
+     $ejem=strtotime("2016-08-20 20:00:00");
+     $diff=($fechaBack-$fechaLocal);
+     $horaNueva=$ejem-$diff;
+     echo $fechaLocal.' -- '.$fechaBack.' -- '.$diff.' -- '.date("Y-m-d H:i:s",$horaNueva);
+    //echo date("Y-m-d H:i:s",$ejem+$diff);
+});
 
 $app->post('/email/', function() use ($app) {
     $auth = new Auth();
