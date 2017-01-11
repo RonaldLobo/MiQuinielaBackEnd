@@ -39,6 +39,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/PrediccionController.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/GrupoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/UsuarioTorneoController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/InvitacionController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/versionController.php';
 
 
 $app->run();

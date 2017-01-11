@@ -1,0 +1,13 @@
+Documentacion para devs
+----------------------------
+
+Tecnologias: 
+
+Front-end -> Angular JS y JTW para enviar el token y mantener la sesion activa.
+
+Back-end -> REST api usando PHP
+
+----------------------------
+
+para correr el proyecto es necesario tener instalado NodeJS, Ruby, Grunt(se instala con npm install grunt-cli), Bower(se instala con npm install bower)
+
