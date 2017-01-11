@@ -12,6 +12,7 @@ class Partido {
 	public $idPartidoEquipo2  = 0;
 	public $marcadorEquipo1   = 0;
         public $marcadorEquipo2   = 0;
+        public $jornada   = 0;
         public $fecha             = "";
         public $prediccion        = "";
         public $torneo            = "";
@@ -25,6 +26,7 @@ class Partido {
                     'idPartidoEquipo2'  => (int)$this->idPartidoEquipo2,
                     'marcadorEquipo1'   => (int)$this->marcadorEquipo1,
                     'marcadorEquipo2'   => (int)$this->marcadorEquipo2,
+                    'jornada'           => (int)$this->jornada,
                     'fecha'             => $this->fecha,
                     'prediccion'        => $this->prediccion,
                     'torneo'            => $this->torneo
@@ -54,6 +56,10 @@ class Partido {
             
             if(isset($partido->marcadorEquipo1)){
                 $this->marcadorEquipo1 = $partido->marcadorEquipo1;
+            }
+            
+            if(isset($partido->jornada)){
+                $this->jornada = $partido->jornada;
             }
             
             if(isset($partido->marcadorEquipo2)){

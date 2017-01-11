@@ -19,7 +19,7 @@ CREATE TABLE equipo(
 	pkIdEquipo int AUTO_INCREMENT PRIMARY KEY,
 	equipo VARCHAR(100) NOT NULL,
         estado CHARACTER(1) NOT NULL,
-	acronimo VARCHAR(3) NOT NULL,
+	acronimo VARCHAR(3) NOT NULL
 );
 
 
@@ -135,3 +135,9 @@ INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Jaguares', '1', 
 INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Necaxa', '1', 'NEC');
 INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Santos Laguna', '1', 'LAG');
 INSERT INTO `equipo` ( `equipo`, `estado`, `acronimo`) VALUES ('Leon', '1', 'LEO');
+
+
+
+-- release 2
+
+ALTER TABLE `appquiniela_2`.`partido` ADD COLUMN jornada INT DEFAULT 1;

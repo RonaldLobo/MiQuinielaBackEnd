@@ -12,11 +12,12 @@ class DbPartido {
     public $fechaLocal=""; 
     function agregarPartido($partido){
         $sql = "INSERT INTO partido(fkIdPartidoTorneo, fkIdPartidoEquipo1, "
-                . "fkIdPartidoEquipo2, marcadorEquipo1, marcadorEquipo2, fecha) VALUES ("
+                . "fkIdPartidoEquipo2, marcadorEquipo1,jornada, marcadorEquipo2, fecha) VALUES ("
                 . $partido->idPartidoTorneo.", "
                 . $partido->idPartidoEquipo1.", "
                 . $partido->idPartidoEquipo2.", "
                 . $partido->marcadorEquipo1.", "
+                . $partido->jornada.", "
                 . $partido->marcadorEquipo2.", '"
                 . $partido->fecha."')";
         $db = new DB();
@@ -31,6 +32,7 @@ class DbPartido {
                 . "fkIdPartidoEquipo1=".$partido->idPartidoEquipo1.", "
                 . "fkIdPartidoEquipo2=".$partido->idPartidoEquipo2.", "
                 . "marcadorEquipo1=".$partido->marcadorEquipo1.", "
+                . "jornada=".$partido->jornada.", "
                 . "marcadorEquipo2=".$partido->marcadorEquipo2.", "
                 . "fecha='".$partido->fecha."' "
                 . "WHERE pkIdPartido=".$partido->idPartido;
@@ -82,7 +84,7 @@ class DbPartido {
     function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin,$local){
         $this->fechaLocal=$local;
         $sql = "SELECT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
-                . "pa.marcadorEquipo1, pa.marcadorEquipo2, pa.fecha "
+                . "pa.marcadorEquipo1, pa.jornada, pa.marcadorEquipo2, pa.fecha "
                 . "FROM partido pa, torneo tor, usuarioTorneo usTo "
                 . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
                 . "AND tor.pkIdTorneo = usTo.fkIdTorneo "
@@ -123,6 +125,10 @@ class DbPartido {
         
         if(isset($row['marcadorEquipo1'])){
             $partido->marcadorEquipo1 = $row['marcadorEquipo1'];
+        }
+        
+        if(isset($row['jornada'])){
+            $partido->jornada = $row['jornada'];
         }
         
         if(isset($row['marcadorEquipo2'])){
@@ -197,6 +203,10 @@ class DbPartido {
         
         if(isset($row['marcadorEquipo1'])){
             $partido->marcadorEquipo1 = $row['marcadorEquipo1'];
+        }
+        
+        if(isset($row['jornada'])){
+            $partido->jornada = $row['jornada'];
         }
         
         if(isset($row['marcadorEquipo2'])){
