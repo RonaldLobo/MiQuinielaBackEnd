@@ -10,9 +10,10 @@ $app->get('/usuarios/', function() use ($app) {
     if($auth->isAuth($authToken)){
         $dbUsuario = new DbUsuario(); 
         $UserPoints = $app->request->params('userPoints');
+        $jornada = $app->request->params('jornada');
         $byUser = $app->request->params('byUser');
         if (isset($UserPoints)){ 
-            $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints));
+            $usuarios = array('usuarios' => $dbUsuario->listarUsuariosPuntos($UserPoints,$jornada));
         }else{ 
             if (isset($byUser)){ 
                 $usuarios = array('usuarios' => $dbUsuario->obtenerDifUsuario($byUser));

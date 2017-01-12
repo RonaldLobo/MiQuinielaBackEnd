@@ -80,6 +80,13 @@ class DbPartido {
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
         return $partidoList;
     }
+    function listarPartidosJ($idUsuario,$torneo){
+        $sql = "SELECT * FROM partido INNER JOIN grupo ON grupo.fkIdGrupoTorneo=partido.fkIdPartidoTorneo WHERE grupo.fkIdGrupoTorneo=".$torneo." GROUP BY partido.jornada";
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
+        return $partidoList;
+    }
     
     function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin,$local){
         $this->fechaLocal=$local;

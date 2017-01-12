@@ -161,12 +161,14 @@ $app->get('/partidos/',  function() use ($app){
         $fechaLocal = $app->request->params('fechaLocal');
         $fechaInicio = $app->request->params('fechaInicio');
         $fechaFin = $app->request->params('fechaFin');
+        $torneo = $app->request->params('torneo');
         $idUsuario = $auth->userId;
         if (isset($fechaInicio) && isset($fechaFin)){
             $partido = array('partido' => $dbPartido->listarPartidosEntre($idUsuario,$fechaInicio, $fechaFin, $fechaLocal));
-            
         }
-        else{
+        else if (isset($torneo)){
+            $partido = array('partido' => $dbPartido->listarPartidosJ($idUsuario,$torneo));
+        }  else {
             $partido = array('partido' => $dbPartido->listarPartidos($idUsuario));
         }
         $jsonArray = json_encode($partido);

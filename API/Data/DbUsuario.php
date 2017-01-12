@@ -74,8 +74,8 @@ class DbUsuario {
     }
     
     
-    function listarUsuariosPuntos($grupoVal){
-        $sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
+    function listarUsuariosPuntos($grupoVal,$jornada){
+        if($jornada==0){$sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
                 . " as puntaje, usuario.usuario FROM usuarioGrupo "
                 . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
                 . "INNER JOIN partido INNER JOIN prediccion "
@@ -83,8 +83,20 @@ class DbUsuario {
                 . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=".$grupoVal." GROUP BY usuario.pkIdUsuario"
-                . " ORDER BY puntaje DESC, usuario.usuario ASC";
+                . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario"
+                ." ORDER BY puntaje DESC, usuario.usuario ASC";
+        }  else {
+            $sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
+                . " as puntaje, usuario.usuario FROM usuarioGrupo "
+                . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
+                . "INNER JOIN partido INNER JOIN prediccion "
+                . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
+                . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
+                . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
+                . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
+                . "WHERE partido.jornada=" . $jornada . " AND usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario"
+                ." ORDER BY puntaje DESC, usuario.usuario ASC";
+        }
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowAUsuarioPuntosList($rowList);
