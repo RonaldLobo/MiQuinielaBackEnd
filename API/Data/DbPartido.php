@@ -145,7 +145,7 @@ class DbPartido {
         if(isset($row['fecha'])){
             $fechaLocal = strtotime($this->fechaLocal);  
             
-            $fechaBack=strtotime(date('h:i', time()));
+            $fechaBack=strtotime(date('H:i', time()));
             $ejem=strtotime($row['fecha']);
             $diff=($fechaBack-$fechaLocal);
             $horaNueva=$ejem-$diff;
