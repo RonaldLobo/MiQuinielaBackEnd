@@ -27,6 +27,11 @@ $app->post('/email/', function() use ($app) {
         $to = "";
         $subject = "";
         $message = "";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+        // More headers
+        $headers .= 'From: <info@appquiniela.com>' . "\r\n";
         if($postedUser->email->user!==""){
             $to = $postedUser->email->user;
             $subject="Bienvenido ".$postedUser->email->name;
@@ -599,22 +604,23 @@ $app->post('/email/', function() use ($app) {
 </html>
        ';
         }
-        else{           
-            foreach ($usuarios['usuarios'] as $usr){
-                $to.=$usr->correo.",";
-            }
-            
+        else{          
             $subject = $postedUser->email->subject;
-            $message = $postedUser->email->body;
+            $message = $postedUser->email->body; 
+            $count=0;
+            foreach ($usuarios['usuarios'] as $usr){
+                $count++;
+                $to.=$usr->correo.",";
+                if(count%15==0){
+                    mail($to,$subject,$message,$headers);
+                    $to="";
+                }
+            }
         }
+            echo $to;
 
 
             // Always set content-type when sending HTML email
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-            // More headers
-            $headers .= 'From: <info@appquiniela.com>' . "\r\n";
             //$headers .= 'Cc: myboss@example.com' . "\r\n";
 
             mail($to,$subject,$message,$headers);
