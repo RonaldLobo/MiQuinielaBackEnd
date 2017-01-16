@@ -158,8 +158,11 @@ class DbPartido {
         $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
         $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
         
-
+        $fechaLocal = strtotime($this->fechaLocal);  
+        $ejem=strtotime($row['fecha']);
         
+
+
         if($prediccion->id == "0"){
             $prediccion->idPartido = $partido->idPartido;
             $prediccion->idEquipo1 = $partido->idPartidoEquipo1;
@@ -169,9 +172,14 @@ class DbPartido {
             $prediccion->marcador2 = 0;
             $prediccion->puntaje   = 0;
             
-            $prediccionReult = $dbPrediccion->agregarPrediccion($prediccion);
+            if ($fechaLocal < $ejem) {
+                $prediccionReult = $dbPrediccion->agregarPrediccion($prediccion);
+                $prediccionPartido = array('id'=>$prediccionReult->id,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
             
-           $prediccionPartido = array('id'=>$prediccionReult->id,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
+            }  else {
+                $prediccionPartido = array('id'=>0,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
+            }
+
         }
         else{
            $prediccionPartido = array('id'=>$prediccion->id,'marcador1'=>$prediccion->marcador1, 

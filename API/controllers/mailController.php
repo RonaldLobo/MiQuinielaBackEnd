@@ -31,8 +31,9 @@ $app->post('/email/', function() use ($app) {
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
         // More headers
-        $headers .= 'From: <info@appquiniela.com>' . "\r\n";
+        $headers .= 'From: <AppQuiniela@appquiniela.com>' . "\r\n";
         if($postedUser->email->user!==""){
+            if($postedUser->email->subject!="felicidades"){
             $to = $postedUser->email->user;
             $subject="Bienvenido ".$postedUser->email->name;
             $message='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -603,6 +604,11 @@ $app->post('/email/', function() use ($app) {
     </body>
 </html>
        ';
+            }  else {
+                $subject = "Felicidades has ganado la jornada!";
+                $message = $postedUser->email->body;
+                $to = $postedUser->email->user;
+            }
         }
         else{          
             $subject = $postedUser->email->subject;
