@@ -623,7 +623,6 @@ $app->post('/email/', function() use ($app) {
                 }
             }
         }
-            echo $to;
 
 
             // Always set content-type when sending HTML email
@@ -633,7 +632,7 @@ $app->post('/email/', function() use ($app) {
             $jsonArray = json_encode($usuarios);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
-            $app->response->setBody($jsonArray);
+    $app->response->setBody();
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
