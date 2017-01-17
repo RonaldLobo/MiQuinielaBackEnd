@@ -58,7 +58,7 @@ class DbUsuario {
         return $usuario;
     }
     function obtenerDifUsuario($username){
-        $sql = "SELECT * FROM usuario WHERE pkIdUsuario!='".$username."' AND pkIdUsuario!=1";
+        $sql = "SELECT `pkIdUsuario`,`nombre`,`apellido1`,`correo`,`usuario`,`tipo`,`rol` FROM usuario WHERE pkIdUsuario!='".$username."' AND pkIdUsuario!=1";
         $db = new DB();
         $row = $db->listar($sql);
         $usuario = $this->parseRowAUsuarioList($row);
