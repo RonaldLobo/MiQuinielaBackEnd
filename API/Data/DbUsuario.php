@@ -66,7 +66,7 @@ class DbUsuario {
     }
     
     function listarUsuarios(){
-        $sql = "SELECT * FROM usuario";
+        $sql = "SELECT `pkIdUsuario`,`nombre`,`apellido1`,`correo`,`usuario`,`tipo`,`rol` FROM usuario";
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowAUsuarioList($rowList);

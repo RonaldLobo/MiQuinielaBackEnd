@@ -32,7 +32,7 @@ $app->post('/email/', function() use ($app) {
 
         // More headers
         $headers .= 'From: <AppQuiniela@appquiniela.com>' . "\r\n";
-        if($postedUser->email->user!==""){
+        if($postedUser->email->user!=="all"){
             if($postedUser->email->subject!="felicidades"){
             $to = $postedUser->email->user;
             $subject="Bienvenido ".$postedUser->email->name;
@@ -632,7 +632,7 @@ $app->post('/email/', function() use ($app) {
             $jsonArray = json_encode($usuarios);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
-    $app->response->setBody();
+    $app->response->$jsonArray;
     }
     else{
         $app->response->headers->set('Content-Type', 'application/json');
