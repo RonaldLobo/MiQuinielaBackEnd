@@ -104,6 +104,55 @@ class DbPartido {
         return $partidoList;
     }
     
+    function obtenerPorcentajes($id){
+        $sql = "select * FROM `prediccion` WHERE `fkIdPrediccionPartido`=".$id." and `fkIdPrediccionUsuario`!=1"; 
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $resultados="";
+        $ganados1=0;
+        $ganados2=0;
+        $empatados=0;
+        foreach ($rowList as $row){
+            if($row['marcadorEquipo1']==$row['marcadorEquipo2']){
+                $empatados=$empatados+1;
+            }else if($row['marcadorEquipo1']>$row['marcadorEquipo2']){
+                $ganados1 =$ganados1+1;
+            }else if($$row['marcadorEquipo1']<$row['marcadorEquipo2']){
+                $ganados2 =$ganados2+1;
+            }
+        }
+        $total=$ganados1+$ganados2+$empatados;
+        $victoria1=round($ganados1/$total*100);
+        $victoria2=round($ganados2/$total*100);
+        $empate =100-$victoria1-$victoria2;
+        
+        //$partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
+        
+        return $victoria1."&".$victoria2."&".$empate;
+    }
+    function obtenerAnteriores($jornada,$equipo){
+        $sql = "SELECT   * FROM `partido` where jornada!=".$jornada." and (`fkIdPartidoEquipo1`=".$equipo." or `fkIdPartidoEquipo2`=".$equipo.") ORDER BY fecha desc LIMIT 5;"; 
+        $db = new DB();
+        $rowList = $db->listar($sql);
+        $resultados="";
+        foreach ($rowList as $row){
+            if($row['marcadorEquipo1']==$row['marcadorEquipo2']){
+                $resultados .="E&";
+            }else if($row['fkIdPartidoEquipo1']==$equipo && $row['marcadorEquipo1']>$row['marcadorEquipo2']){
+                $resultados .="G&";
+            }else if($row['fkIdPartidoEquipo1']==$equipo && $row['marcadorEquipo1']<$row['marcadorEquipo2']){
+                $resultados .="P&";
+            }  else if($row['fkIdPartidoEquipo2']==$equipo && $row['marcadorEquipo1']>$row['marcadorEquipo2']){
+                $resultados .="P&";
+            }else if($row['fkIdPartidoEquipo2']==$equipo && $row['marcadorEquipo1']<$row['marcadorEquipo2']){
+                $resultados .="G&";
+            }
+            //array_push($pasedPartidos, $this->parseRowPartido($row, $idUsuario));
+        }
+        //$partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
+        
+        return $resultados;
+    }
     function parseRowPartido($row, $idUsuario){
         $partido        = new Partido();
         $prediccion     = new Prediccion();
@@ -157,7 +206,9 @@ class DbPartido {
         $torneo     = $dbTorneo->obtenerTorneo($partido->idPartidoTorneo);
         $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
         $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
-        
+        $partido->previos1=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo1);
+        $partido->previos2=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo2);
+        $partido->porcentajes=  $this->obtenerPorcentajes($partido->idPartido);
         $fechaLocal = strtotime($this->fechaLocal);  
         $ejem=strtotime($row['fecha']);
         

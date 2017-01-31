@@ -16,6 +16,9 @@ class Partido {
         public $fecha             = "";
         public $prediccion        = "";
         public $torneo            = "";
+        public $porcentajes            = "";
+        public $previos1        = "";
+        public $previos2        = "";
                 
         function toJson(){
             $data = array(
@@ -29,7 +32,10 @@ class Partido {
                     'jornada'           => (int)$this->jornada,
                     'fecha'             => $this->fecha,
                     'prediccion'        => $this->prediccion,
-                    'torneo'            => $this->torneo
+                    'torneo'            => $this->torneo,
+                    'porcentajes'       =>$this->porcentajes,
+                    'previos1'            => $this->previos1,
+                    'previos2'            => $this->previos2
                     
                 )
             );
