@@ -16,8 +16,8 @@ class DbPartido {
                 . $partido->idPartidoTorneo.", "
                 . $partido->idPartidoEquipo1.", "
                 . $partido->idPartidoEquipo2.", "
-                . $partido->marcadorEquipo1.", "
-                . $partido->jornada.", "
+                . $partido->marcadorEquipo1.", '"
+                . $partido->jornada."', "
                 . $partido->marcadorEquipo2.", '"
                 . $partido->fecha."')";
         $db = new DB();
@@ -81,7 +81,7 @@ class DbPartido {
         return $partidoList;
     }
     function listarPartidosJ($idUsuario,$torneo){
-        $sql = "SELECT * FROM partido INNER JOIN grupo ON grupo.fkIdGrupoTorneo=partido.fkIdPartidoTorneo WHERE grupo.fkIdGrupoTorneo=".$torneo." GROUP BY partido.jornada";
+        $sql = "SELECT * FROM partido INNER JOIN grupo ON grupo.fkIdGrupoTorneo=partido.fkIdPartidoTorneo WHERE grupo.fkIdGrupoTorneo=".$torneo." GROUP BY partido.jornada ORDER BY pkIdPartido Desc";
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
@@ -122,9 +122,16 @@ class DbPartido {
             }
         }
         $total=$ganados1+$ganados2+$empatados;
-        $victoria1=round($ganados1/$total*100);
-        $victoria2=round($ganados2/$total*100);
-        $empate =100-$victoria1-$victoria2;
+        if($total!=0){
+            $victoria1=round($ganados1/$total*100);
+            $victoria2=round($ganados2/$total*100);
+            $empate =100-$victoria1-$victoria2;
+        }else{
+            $victoria1=0;
+            $victoria2=0;
+            $empate =0;
+            
+        }
         
         //$partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
         
@@ -184,7 +191,11 @@ class DbPartido {
         }
         
         if(isset($row['jornada'])){
-            $partido->jornada = $row['jornada'];
+            if (is_numeric($row['jornada'])) {
+                $partido->jornada = (int)$row['jornada'];
+            }else{
+                $partido->jornada = $row['jornada'];
+            }
         }
         
         if(isset($row['marcadorEquipo2'])){
@@ -228,7 +239,7 @@ class DbPartido {
                 $prediccionPartido = array('id'=>$prediccionReult->id,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
             
             }  else {
-                $prediccionPartido = array('id'=>0,'marcador1'=>0, 'marcador2'=>0, 'puntaje'=>0);
+                $prediccionPartido = array('id'=>0,'marcador1'=>" ", 'marcador2'=>" ", 'puntaje'=>0);
             }
 
         }
@@ -272,7 +283,11 @@ class DbPartido {
         }
         
         if(isset($row['jornada'])){
-            $partido->jornada = $row['jornada'];
+            if (is_numeric($row['jornada'])) {
+                $partido->jornada = (int)$row['jornada'];
+            }else{
+                $partido->jornada = $row['jornada'];
+            }
         }
         
         if(isset($row['marcadorEquipo2'])){

@@ -66,7 +66,7 @@ class DbPrediccion {
     
     function listarPartidosPrediccion($idUsuario,$idTorneo){
         $sql = "SELECT prediccion.pkIdPrediccion,prediccion.fkIdPrediccionEquipo1,prediccion.fkIdPrediccionEquipo2"
-                . ",prediccion.marcadorEquipo1 as m1,prediccion.marcadorEquipo2 as m2, partido.marcadorEquipo1 as p1,"
+                . ",prediccion.marcadorEquipo1 as m1,prediccion.marcadorEquipo2 as m2, partido.jornada as jornada, partido.marcadorEquipo1 as p1,"
                 . "partido.marcadorEquipo2 as p2,prediccion.puntaje ,partido.fecha FROM prediccion INNER JOIN usuario INNER JOIN partido"
                 . " ON  usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario AND prediccion.fkIdPrediccionPartido=partido.pkIdPartido "
                 . "WHERE prediccion.fkIdPrediccionUsuario=".$idUsuario." AND prediccion.puntaje!=0 AND partido.fkIdPartidoTorneo=".$idTorneo; 
@@ -108,6 +108,10 @@ class DbPrediccion {
         
         if(isset($row['puntaje'])){
             $prediccion->puntaje = $row['puntaje'];
+        }
+        
+        if(isset($row['jornada'])){
+            $prediccion->idPartido = $row['jornada'];
         }
         
         
