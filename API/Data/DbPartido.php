@@ -32,7 +32,7 @@ class DbPartido {
                 . "fkIdPartidoEquipo1=".$partido->idPartidoEquipo1.", "
                 . "fkIdPartidoEquipo2=".$partido->idPartidoEquipo2.", "
                 . "marcadorEquipo1=".$partido->marcadorEquipo1.", "
-                . "jornada=".$partido->jornada.", "
+                . "jornada='".$partido->jornada."', "
                 . "marcadorEquipo2=".$partido->marcadorEquipo2.", "
                 . "fecha='".$partido->fecha."' "
                 . "WHERE pkIdPartido=".$partido->idPartido;
@@ -137,8 +137,8 @@ class DbPartido {
         
         return $victoria1."&".$victoria2."&".$empate;
     }
-    function obtenerAnteriores($jornada,$equipo){
-        $sql = "SELECT   * FROM `partido` where jornada!=".$jornada." and (`fkIdPartidoEquipo1`=".$equipo." or `fkIdPartidoEquipo2`=".$equipo.") ORDER BY fecha desc LIMIT 5;"; 
+    function obtenerAnteriores($jornada,$equipo,$torneo){
+        $sql = "SELECT   * FROM `partido` where jornada!='".$jornada."' and fkIdPartidoTorneo=".$torneo." and (`fkIdPartidoEquipo1`=".$equipo." or `fkIdPartidoEquipo2`=".$equipo.") ORDER BY fecha desc LIMIT 5;"; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $resultados="";
@@ -217,7 +217,7 @@ class DbPartido {
         $torneo     = $dbTorneo->obtenerTorneo($partido->idPartidoTorneo);
         $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
         $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
-        $partido->previos1=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo1);
+        $partido->previos1=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo1,$partido->idPartidoTorneo);
         $partido->previos2=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo2);
         $partido->porcentajes=  $this->obtenerPorcentajes($partido->idPartido);
         $fechaLocal = strtotime($this->fechaLocal);  
