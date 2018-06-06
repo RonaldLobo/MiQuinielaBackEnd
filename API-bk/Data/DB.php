@@ -9,13 +9,13 @@ class DB {
 
    
    
-    function Conectar() { 
+    function Conectar() {
         //verifica si es localhost o si es live
         $whitelist = array( '127.0.0.1', '::1' );
         if(!in_array( $_SERVER['REMOTE_ADDR'], $whitelist) ){
-            $this->servername = "tucanoquinielacom.ipagemysql.com";
-            $this->username = "quinielaadmin";
-            $this->password = "quinielapass";
+            $this->servername = "appquinielacom.ipagemysql.com";
+            $this->username = "appquinielaadmin";
+            $this->password = "appquinielapass";
         }
         // Create connection
         $this->conn = mysqli_connect($this->servername, $this->username, $this->password, $this->dbName);

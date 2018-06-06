@@ -75,10 +75,8 @@ class DbUsuario {
     
     
     function listarUsuariosPuntos($grupoVal,$jornada){
-        if($jornada=="0"){
-            $sql = "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
-                . "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
-                . " as puntaje, SUBSTRING( usuario.usuario, 1, 14 ) AS usuario FROM usuarioGrupo "
+        if($jornada=="0"){$sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
+                . " as puntaje, usuario.usuario FROM usuarioGrupo "
                 . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
                 . "INNER JOIN partido INNER JOIN prediccion "
                 . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
@@ -86,31 +84,28 @@ class DbUsuario {
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
                 . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario"
-                ." ORDER BY puntaje DESC, usuario.usuario ASC"
-                . ")t CROSS JOIN ( SELECT @cnt :=0 ) AS dummy";
+                ." ORDER BY puntaje DESC, usuario.usuario ASC";
         }  else {
-            $sql = "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
-                . "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
-                . " as puntaje, SUBSTRING( usuario.usuario, 1, 14 ) AS usuario FROM usuarioGrupo "
+            $sql = "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
+                . " as puntaje, usuario.usuario FROM usuarioGrupo "
                 . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
                 . "INNER JOIN partido INNER JOIN prediccion "
                 . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
                 . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
                 . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
                 . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE partido.jornada='" . $jornada . "' AND usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario "
-                . "ORDER BY puntaje DESC, usuario.usuario ASC"
-                . ")t CROSS JOIN ( SELECT @cnt :=0 ) AS dummy";
+                . "WHERE partido.jornada='" . $jornada . "' AND usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario"
+                ." ORDER BY puntaje DESC, usuario.usuario ASC";
         }
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowAUsuarioPuntosList($rowList);
         return $usuarioList;
     }
-      function parseRowAUsuarioPuntos($row) {
+      function parseRowAUsuarioPuntos($row,$position) {
         $user = new UsuarioPuntos();
         if(isset($row['usuario'])){
-            $user->nombre = $row['usuario'];
+            $user->nombre = substr($row['usuario'], 0, 14);
         }
         if(isset($row['pkIdUsuario'])){
             $user->id = $row['pkIdUsuario'];
@@ -121,9 +116,7 @@ class DbUsuario {
         if(isset($row['torneo'])){
             $user->torneo = $row['torneo'];
         }
-        if(isset($row['position'])){
-            $user->position = (int)$row['position'];
-        }
+        $user->position=$position;
         return $user;
     }
     function parseRowAUsuario($row) {
@@ -157,10 +150,10 @@ class DbUsuario {
     
     function parseRowAUsuarioPuntosList($rowList) {
         $parsedUsuarios = array();
-//        foreach ($rowList as $row) {
-        $size = sizeOf($rowList);
-        for ($i=0; $i<$size; $i++){
-            array_push($parsedUsuarios, $this->parseRowAUsuarioPuntos($rowList[$i]));
+        $miPos=0;
+        foreach ($rowList as $row) {
+            $miPos++;
+            array_push($parsedUsuarios, $this->parseRowAUsuarioPuntos($row,$miPos));
         }
         return $parsedUsuarios;
     }

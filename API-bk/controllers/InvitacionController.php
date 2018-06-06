@@ -82,13 +82,11 @@ $app->post('/invitaciones/', function() use ($app) {
     $authToken = $app->request->headers->get('Authorization');
     if(true){
         $usuarioGrupo = new UsuarioGrupo(); 
-        $dbUsuarioGrupo = new DbUsuarioGrupo();
+        $dbUsuarioGrupo = new DbUsuarioGrupo(); 
         $body = $app->request->getBody();
         $postedUser = json_decode($body);
         $usuarioGrupo->parseDto($postedUser->usuarioGrupo);
-        if($dbUsuarioGrupo->existeUsuarioGrupos($usuarioGrupo->usuario,$usuarioGrupo->grupo) == false){
-            $resultUsuario = $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
-        }
+        $resultUsuario = $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);
         $app->response->setBody('');

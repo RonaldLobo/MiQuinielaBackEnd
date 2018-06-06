@@ -218,7 +218,7 @@ class DbPartido {
         $equipo1    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo1);
         $equipo2    = $dbEquipo->obtenerEquipo($partido->idPartidoEquipo2);
         $partido->previos1=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo1,$partido->idPartidoTorneo);
-        $partido->previos2=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo2,$partido->idPartidoTorneo);
+        $partido->previos2=  $this->obtenerAnteriores($partido->jornada,$partido->idPartidoEquipo2);
         $partido->porcentajes=  $this->obtenerPorcentajes($partido->idPartido);
         $fechaLocal = strtotime($this->fechaLocal);  
         $ejem=strtotime($row['fecha']);

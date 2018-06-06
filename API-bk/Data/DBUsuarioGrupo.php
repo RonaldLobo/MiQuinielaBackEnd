@@ -43,16 +43,6 @@ class DbUsuarioGrupo {
         $usuarioGrupo = $this->parseRowAUsuarioGrupo($row);
         return $usuarioGrupo;
     }
-
-    function existeUsuarioGrupos($idUsuario, $idGrupo){
-        $sql = "SELECT * FROM usuarioGrupo WHERE fkIdGrupo=".$idGrupo." AND fkIdUsuarioGrupo=".$idUsuario;
-        $db = new DB();
-        $rowList = $db->listar($sql);
-        if(count($rowList) == 0){
-            return false;
-        }
-        return true;
-    }
     
     /*function obtenerPorUsuarioGrupo($userTournametname){
         $sql = "SELECT * FROM usuarioGrupo WHERE usuarioGrupo='".$userTournametname."'";
