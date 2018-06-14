@@ -81,7 +81,7 @@ class DbPartido {
         return $partidoList;
     }
     function listarPartidosJ($idUsuario,$torneo){
-        $sql = "SELECT * FROM partido INNER JOIN grupo ON grupo.fkIdGrupoTorneo=partido.fkIdPartidoTorneo WHERE grupo.fkIdGrupoTorneo=".$torneo." GROUP BY partido.jornada ORDER BY pkIdPartido Desc";
+        $sql = "SELECT DISTINCT * FROM partido INNER JOIN grupo ON grupo.fkIdGrupoTorneo=partido.fkIdPartidoTorneo WHERE grupo.fkIdGrupoTorneo=".$torneo." GROUP BY partido.jornada ORDER BY pkIdPartido Desc";
         $db = new DB();
         $rowList = $db->listar($sql);
         $partidoList = $this->parseRowaPartidoList($rowList, $idUsuario);
@@ -90,7 +90,7 @@ class DbPartido {
     
     function listarPartidosEntre($idUsuario, $fechaInicio, $fechaFin,$local){
         $this->fechaLocal=$local;
-        $sql = "SELECT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
+        $sql = "SELECT DISTINCT pa.pkIdPartido, pa.fkIdPartidoTorneo, pa.fkIdPartidoEquipo1, pa.fkIdPartidoEquipo2, "
                 . "pa.marcadorEquipo1, pa.jornada, pa.marcadorEquipo2, pa.fecha "
                 . "FROM partido pa, torneo tor, usuarioTorneo usTo "
                 . "WHERE pa.fkIdPartidoTorneo = tor.pkIdTorneo "
@@ -117,7 +117,7 @@ class DbPartido {
                 $empatados=$empatados+1;
             }else if($row['marcadorEquipo1']>$row['marcadorEquipo2']){
                 $ganados1 =$ganados1+1;
-            }else if($$row['marcadorEquipo1']<$row['marcadorEquipo2']){
+            }else if($row['marcadorEquipo1']<$row['marcadorEquipo2']){
                 $ganados2 =$ganados2+1;
             }
         }
@@ -138,7 +138,7 @@ class DbPartido {
         return $victoria1."&".$victoria2."&".$empate;
     }
     function obtenerAnteriores($jornada,$equipo,$torneo){
-        $sql = "SELECT   * FROM `partido` where jornada!='".$jornada."' and fkIdPartidoTorneo=".$torneo." and (`fkIdPartidoEquipo1`=".$equipo." or `fkIdPartidoEquipo2`=".$equipo.") ORDER BY fecha desc LIMIT 5;"; 
+        $sql = "SELECT DISTINCT * FROM `partido` where jornada!='".$jornada."' and fkIdPartidoTorneo=".$torneo." and (`fkIdPartidoEquipo1`=".$equipo." or `fkIdPartidoEquipo2`=".$equipo.") ORDER BY fecha desc LIMIT 5;"; 
         $db = new DB();
         $rowList = $db->listar($sql);
         $resultados="";

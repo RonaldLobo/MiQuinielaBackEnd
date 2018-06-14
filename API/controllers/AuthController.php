@@ -37,6 +37,19 @@ $app->post('/login/', function() use ($app) {
         if($user->tipo == "fb"){
             $user->rol = "usuario";
             $resultUsuario = $dbUsuario->agregarUsuario($user);
+                
+                $dbUsuarioGrupo = new DbUsuarioGrupo();
+                $dbUsuarioTorneo = new DbUsuarioTorneo();
+                $usuarioTorneo = new UsuarioTorneo(); 
+                $usuarioTorneo->torneo = 2;
+                $usuarioTorneo->usuario = $resultUsuario->id;
+                $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+                $usuarioGrupo = new UsuarioGrupo();
+                $usuarioGrupo->grupo = 58;
+                $usuarioGrupo->estado = "miembro";
+                $usuarioGrupo->usuario = $resultUsuario->id;
+                $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+                
             $auth->generateToken($resultUsuario);
             $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(200);
@@ -44,7 +57,7 @@ $app->post('/login/', function() use ($app) {
             return $app;
         }
     }
-    $error = new Error();
+    $error = new ErrorCus();
     $error->error = "Por favor seleccione otro usuario";
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(409);
@@ -55,22 +68,22 @@ $app->post('/login/', function() use ($app) {
 $app->post('/signup/', function() use ($app) {
     $auth = new Auth(); 
     $user = new Usuario(); 
-    $usuarioTorneo = new UsuarioTorneo(); 
     $dbUser = new DbUsuario(); 
-    $dbUsuarioGrupo = new DbUsuarioGrupo();
-    $dbUsuarioTorneo = new DbUsuarioTorneo();
     $body = $app->request->getBody();
     $user->parseDto(json_decode($body)->usuario);
     $user->rol = "usuario";
     $resultUsuario = $dbUser->agregarUsuario($user);
-        $usuarioTorneo->torneo = 1;
+        $dbUsuarioGrupo = new DbUsuarioGrupo();
+        $dbUsuarioTorneo = new DbUsuarioTorneo();
+        $usuarioTorneo = new UsuarioTorneo(); 
+        $usuarioTorneo->torneo = 2;
         $usuarioTorneo->usuario = $resultUsuario->id;
-        //$dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+        $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
         $usuarioGrupo = new UsuarioGrupo();
-        $usuarioGrupo->grupo = 1;
+        $usuarioGrupo->grupo = 58;
         $usuarioGrupo->estado = "miembro";
         $usuarioGrupo->usuario = $resultUsuario->id;
-        //$dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+        $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
     $auth->generateToken($resultUsuario);
     $app->response->headers->set('Content-Type', 'application/json');
     $app->response->setStatus(200);

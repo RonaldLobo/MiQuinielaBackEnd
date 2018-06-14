@@ -29,7 +29,7 @@ class Partido {
                     'idPartidoEquipo2'  => (int)$this->idPartidoEquipo2,
                     'marcadorEquipo1'   => (int)$this->marcadorEquipo1,
                     'marcadorEquipo2'   => (int)$this->marcadorEquipo2,
-                    'jornada'           => (int)$this->jornada,
+                    'jornada'           => $this->jornada,
                     'fecha'             => $this->fecha,
                     'prediccion'        => $this->prediccion,
                     'torneo'            => $this->torneo,

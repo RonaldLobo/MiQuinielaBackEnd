@@ -3,8 +3,10 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Auth.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Error.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/Usuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/models/UsuarioTorneo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DBUsuarioGrupo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/Data/DbUsuarioTorneo.php';
 
 $app->get('/invitaciones/:id', function($id) use ($app) {
     $auth = new Auth();
@@ -88,6 +90,30 @@ $app->post('/invitaciones/', function() use ($app) {
         $usuarioGrupo->parseDto($postedUser->usuarioGrupo);
         if($dbUsuarioGrupo->existeUsuarioGrupos($usuarioGrupo->usuario,$usuarioGrupo->grupo) == false){
             $resultUsuario = $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupo);
+            $dbGrupo = new DbGrupo(); 
+            $resultGrupo = $dbGrupo->obtenerGrupo($usuarioGrupo->grupo);
+            $dbUsuarioTorneo= new DbUsuarioTorneo();
+            $usuarioTorneoExiste = $dbUsuarioTorneo->obtenerUsuarioTorneoPorUsuarioTorneo($usuarioGrupo->usuario, $resultGrupo->idTorneo);
+            if($usuarioTorneoExiste->id==null){
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(405);
+                $app->response->setBody("");
+            }
+            else{
+                $usuarioTorneo = new UsuarioTorneo();
+                $usuarioTorneo->torneo = $resultGrupo->idTorneo;
+                $usuarioTorneo->usuario = $usuarioGrupo->usuario;
+                $resultUsuarioTorneo= $dbUsuarioTorneo->agregarUsuarioTorneo($usuarioTorneo);
+                $grupo = $dbGrupo->obtenerGrupoGeneral($usuarioTorneo->torneo);
+                $usuarioGrupoDos = new UsuarioGrupo();
+                $usuarioGrupoDos->grupo = $grupo->id;
+                $usuarioGrupoDos->estado = "miembro";
+                $usuarioGrupoDos->usuario = $usuarioGrupo->usuario;
+                $dbUsuarioGrupo->agregarUsuarioGrupo($usuarioGrupoDos);
+                $app->response->headers->set('Content-Type', 'application/json');
+                $app->response->setStatus(200);
+                $app->response->setBody($resultUsuarioTorneo->toJson());
+            }
         }
         $app->response->headers->set('Content-Type', 'application/json');
         $app->response->setStatus(200);

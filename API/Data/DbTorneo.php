@@ -59,7 +59,7 @@ class DbTorneo {
     }
       
     function listarTorneoPorUsuario($usuario){
-        $sql = "SELECT torneo.pkIdTorneo , torneo.torneo , torneo.estado FROM usuarioTorneo INNER JOIN torneo ON usuarioTorneo.fkIdTorneo=torneo.pkIdTorneo WHERE usuarioTorneo.fkIdUsuario=".$usuario;
+        $sql = "SELECT DISTINCT torneo.pkIdTorneo , torneo.torneo , torneo.estado FROM usuarioTorneo INNER JOIN torneo ON usuarioTorneo.fkIdTorneo=torneo.pkIdTorneo WHERE usuarioTorneo.fkIdUsuario=".$usuario;
         $db = new DB();
         $rowList = $db->listar($sql);
         $usuarioList = $this->parseRowTorneoList($rowList);

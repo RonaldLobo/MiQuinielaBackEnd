@@ -76,30 +76,97 @@ class DbUsuario {
     
     function listarUsuariosPuntos($grupoVal,$jornada){
         if($jornada=="0"){
-            $sql = "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
-                . "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
-                . " as puntaje, SUBSTRING( usuario.usuario, 1, 14 ) AS usuario FROM usuarioGrupo "
-                . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
-                . "INNER JOIN partido INNER JOIN prediccion "
-                . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
-                . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
-                . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
-                . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario"
-                ." ORDER BY puntaje DESC, usuario.usuario ASC"
+            $sql = 
+                "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
+                . "        SELECT "
+                . "                pkIdUsuario, "
+                . "                tipo,"
+                . "                nombre,"
+                . "                apellido1,"
+                . "                torneo,"
+                . "                SUM(puntaje) as puntaje,"
+                . "                usuario"
+                . "                FROM ("
+                . "                SELECT "
+                . "                        usuario.pkIdUsuario ,"
+                . "                        usuario.tipo ,"
+                . "                        usuario.nombre,"
+                . "                        usuario.apellido1 ,"
+                . "                        torneo.torneo, "
+                . "                        prediccion.puntaje as puntaje, "
+                . "                        prediccion.fkIdPrediccionPartido as partido,"
+                . "                        SUBSTRING( usuario.usuario, 1, 14 ) AS usuario "
+                . "                FROM usuarioGrupo "
+                . "                INNER JOIN grupo "
+                . "                INNER JOIN usuario "
+                . "                INNER JOIN torneo "
+                . "                INNER JOIN partido "
+                . "                INNER JOIN prediccion "
+                . "                ON "
+                . "                        usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND "
+                . "                        usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo AND "
+                . "                        torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND "
+                . "                        partido.fkIdPartidoTorneo=torneo.pkIdTorneo AND "
+                . "                        partido.pkIdPartido = prediccion.fkIdPrediccionPartido AND "
+                . "                        usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
+                . "                WHERE "
+                . "                        usuarioGrupo.estado='miembro' AND "
+                . "                        usuario.pkIdUsuario!=1 AND "
+                . "                        usuarioGrupo.fkIdGrupo=" . $grupoVal
+                . "                GROUP BY "
+                . "                        partido, pkIdUsuario"
+                . "        ) as temp"
+                . "        GROUP BY "
+                . "                pkIdUsuario"
+                . "        ORDER BY "
+                . "                puntaje DESC"
                 . ")t CROSS JOIN ( SELECT @cnt :=0 ) AS dummy";
         }  else {
-            $sql = "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
-                . "SELECT usuario.pkIdUsuario ,torneo.torneo, SUM(prediccion.puntaje)"
-                . " as puntaje, SUBSTRING( usuario.usuario, 1, 14 ) AS usuario FROM usuarioGrupo "
-                . "INNER JOIN grupo INNER JOIN usuario INNER JOIN torneo "
-                . "INNER JOIN partido INNER JOIN prediccion "
-                . "ON usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo "
-                . "AND torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND partido.fkIdPartidoTorneo=torneo.pkIdTorneo "
-                . "AND partido.pkIdPartido = prediccion.fkIdPrediccionPartido "
-                . "AND usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
-                . "WHERE partido.jornada='" . $jornada . "' AND usuarioGrupo.estado='miembro' AND usuario.pkIdUsuario!=1 AND usuarioGrupo.fkIdGrupo=" . $grupoVal . " GROUP BY usuario.pkIdUsuario "
-                . "ORDER BY puntaje DESC, usuario.usuario ASC"
+            $sql = 
+                "SELECT ( @cnt := @cnt +1 ) AS position, t. * FROM ("
+                . "        SELECT "
+                . "                pkIdUsuario, "
+                . "                tipo,"
+                . "                nombre,"
+                . "                apellido1,"
+                . "                torneo,"
+                . "                SUM(puntaje) as puntaje,"
+                . "                usuario"
+                . "                FROM ("
+                . "                SELECT "
+                . "                        usuario.pkIdUsuario ,"
+                . "                        usuario.tipo ,"
+                . "                        usuario.nombre,"
+                . "                        usuario.apellido1 ,"
+                . "                        torneo.torneo, "
+                . "                        prediccion.puntaje as puntaje, "
+                . "                        prediccion.fkIdPrediccionPartido as partido,"
+                . "                        SUBSTRING( usuario.usuario, 1, 14 ) AS usuario "
+                . "                FROM usuarioGrupo "
+                . "                INNER JOIN grupo "
+                . "                INNER JOIN usuario "
+                . "                INNER JOIN torneo "
+                . "                INNER JOIN partido "
+                . "                INNER JOIN prediccion "
+                . "                ON "
+                . "                        usuarioGrupo.fkIdGrupo=grupo.pkIdGrupo AND "
+                . "                        usuario.pkIdUsuario=usuarioGrupo.fkIdUsuarioGrupo AND "
+                . "                        torneo.pkIdTorneo=grupo.fkIdGrupoTorneo AND "
+                . "                        partido.fkIdPartidoTorneo=torneo.pkIdTorneo AND "
+                . "                        partido.pkIdPartido = prediccion.fkIdPrediccionPartido AND "
+                . "                        usuario.pkIdUsuario=prediccion.fkIdPrediccionUsuario "
+                . "                WHERE "
+                . "                        partido.jornada='" . $jornada . "' AND "
+                . "                        usuarioGrupo.estado='miembro' AND "
+                . "                        usuario.pkIdUsuario!=1 AND "
+                . "                        usuarioGrupo.fkIdGrupo=" . $grupoVal
+                . "                GROUP BY "
+                . "                        partido, pkIdUsuario"
+                . "        ) as temp"
+                . "        GROUP BY "
+                . "                pkIdUsuario"
+                . "        ORDER BY "
+                . "                puntaje DESC"
                 . ")t CROSS JOIN ( SELECT @cnt :=0 ) AS dummy";
         }
         $db = new DB();
@@ -110,7 +177,11 @@ class DbUsuario {
       function parseRowAUsuarioPuntos($row) {
         $user = new UsuarioPuntos();
         if(isset($row['usuario'])){
-            $user->nombre = $row['usuario'];
+            if($row['tipo'] == 'fb'){
+                $user->nombre = $row['nombre'].' '.$row['apellido1'];
+            } else {
+                $user->nombre = $row['usuario'];
+            }
         }
         if(isset($row['pkIdUsuario'])){
             $user->id = $row['pkIdUsuario'];

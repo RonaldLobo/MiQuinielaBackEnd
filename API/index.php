@@ -41,6 +41,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/UsuarioTorneoControll
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/InvitacionController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/versionController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/mailController.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/API/controllers/NotifyEmailController.php';
 
 
 $app->run();

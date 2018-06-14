@@ -1,6 +1,6 @@
 <?php
 
-class Error {
+class ErrorCus {
     public $id = 1;
     public $error = 'invalid password';
    

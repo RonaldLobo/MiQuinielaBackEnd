@@ -58,7 +58,7 @@ $app->post('/usuarios/', function() use ($app) {
             $usuario->parseDto($postedUser->usuario);
             $resultUsuario = $dbUsuario->agregarUsuario($usuario);
             if(is_string($resultUsuario)){
-                $error = new Error();
+                $error = new ErrorCus();
                 if (strpos($resultUsuario, 'Duplicate entry') !== false) {
                     $resultUsuario = 'Por favor seleccione otro usuario';
                 }

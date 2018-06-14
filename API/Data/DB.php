@@ -13,7 +13,10 @@ class DB {
         //verifica si es localhost o si es live
         $whitelist = array( '127.0.0.1', '::1' );
         if(!in_array( $_SERVER['REMOTE_ADDR'], $whitelist) ){
-            $this->servername = "tucanoquinielacom.ipagemysql.com";
+//            $this->servername = "tucanoquinielacom.ipagemysql.com";
+//            $this->username = "quinielaadmin";
+//            $this->password = "quinielapass";
+            $this->servername = "localhost";
             $this->username = "quinielaadmin";
             $this->password = "quinielapass";
         }
@@ -22,7 +25,7 @@ class DB {
 
         // Check connection
         if (!$this->conn) {
-            die("Connection failed: " . mysqli_connect_error());
+            die("Connection failed: " . mysqli_connect_ErrorCus());
         }
     }
     

@@ -77,7 +77,7 @@ class DbGrupo {
         return $grupoList;
     }
     function listarGruposUsuario($grupoVal){
-        $sql = "SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado FROM grupo INNER JOIN usuarioGrupo ON grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
+        $sql = "SELECT DISTINCT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado FROM grupo INNER JOIN usuarioGrupo ON grupo.pkIdGrupo=usuarioGrupo.fkIdGrupo "
                 . "INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.estado='miembro' AND usuarioGrupo.fkIdUsuarioGrupo=".$grupoVal;
         $db = new DB();
         $rowList = $db->listar($sql);
@@ -86,7 +86,7 @@ class DbGrupo {
     }
     
     function listarGruposSinUsuario($grupoVal,$usrT){
-        $sql = 'SELECT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
+        $sql = 'SELECT DISTINCT pkIdGrupo,fkIdGrupoTorneo,fkIdGrupoUsuario,nombre,torneo.torneo as estado  FROM grupo LEFT JOIN usuarioGrupo ON grupo.pkIdGrupo = usuarioGrupo.fkIdGrupo AND usuarioGrupo.fkIdUsuarioGrupo = '
                 . $grupoVal
                 . ' INNER JOIN usuarioTorneo ON usuarioTorneo.fkIdTorneo = grupo.fkIdGrupoTorneo INNER JOIN torneo ON  torneo.pkIdTorneo=grupo.fkIdGrupoTorneo WHERE usuarioGrupo.pkIdUsuarioGrupo IS NULL AND grupo.fkIdGrupoTorneo='.$usrT.'  GROUP BY grupo.pkIdGrupo ';
         $db = new DB();
